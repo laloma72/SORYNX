@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SORYNX | Pedido de prueba — DARK ANGEL TEE</title>
+<meta name="description" content="Simulación de compra de SORYNX. Ningún pago real se procesa en esta página.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;800;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="grain"></div>
+
+<!-- ============ BANNER DE MODO PRUEBA ============ -->
+<div class="test-banner">
+  <span class="test-banner-dot"></span>
+  Entorno de prueba — no se procesan pagos reales ni se cobra dinero
+</div>
+
+<!-- ============ HEADER ============ -->
+<header class="header">
+  <a href="#" class="logo">SORYNX</a>
+  <span class="header-tag">checkout&nbsp;de&nbsp;prueba</span>
+</header>
+
+<main class="shell">
+
+  <!-- ============ PRODUCTO ============ -->
+  <section class="product" aria-labelledby="product-name">
+    <div class="product-media">
+      <div class="product-media-frame">
+        <img id="productImgFront" src="img/tee_flat_front.jpg" alt="SORYNX Dark Angel Tee — vista frontal">
+        <img id="productImgBack" src="img/tee_flat_back.jpg" alt="SORYNX Dark Angel Tee — vista trasera" class="is-hidden">
+      </div>
+      <div class="media-switch" role="tablist" aria-label="Vista del producto">
+        <button type="button" class="media-switch-btn is-active" data-view="front" role="tab" aria-selected="true">Frontal</button>
+        <button type="button" class="media-switch-btn" data-view="back" role="tab" aria-selected="false">Trasera</button>
+      </div>
+    </div>
+
+    <div class="product-info">
+      <p class="product-kicker">Colección Dark Angel</p>
+      <h1 class="product-name" id="product-name">SORYNX DARK ANGEL TEE</h1>
+      <p class="product-desc">Camiseta streetwear exclusiva de SORYNX. Diseño Dark Angel con estética oscura y premium.</p>
+
+      <div class="product-price-row">
+        <span class="product-price">0,00&nbsp;€</span>
+        <span class="price-tag">Pedido de prueba</span>
+      </div>
+
+      <ul class="product-specs">
+        <li>100% algodón premium</li>
+        <li>Corte oversize</li>
+        <li>Serigrafía Dark Angel frontal y trasera</li>
+      </ul>
+
+      <!-- Selección de talla -->
+      <div class="field-block">
+        <label class="field-label" id="sizeLabel">Talla</label>
+        <div class="size-grid" role="radiogroup" aria-labelledby="sizeLabel">
+          <button type="button" class="size-btn" data-size="S" role="radio" aria-checked="false">S</button>
+          <button type="button" class="size-btn" data-size="M" role="radio" aria-checked="false">M</button>
+          <button type="button" class="size-btn" data-size="L" role="radio" aria-checked="false">L</button>
+          <button type="button" class="size-btn" data-size="XL" role="radio" aria-checked="false">XL</button>
+        </div>
+        <p class="field-error" id="sizeError" hidden>Selecciona una talla para continuar.</p>
+      </div>
+
+      <button type="button" class="btn-continue" id="continueBtn" disabled>
+        Continuar con el pedido
+      </button>
+    </div>
+  </section>
+
+  <!-- ============ PROGRESO ============ -->
+  <nav class="progress" id="progressNav" aria-label="Progreso del pedido">
+    <div class="progress-step is-active" data-step="1">
+      <span class="progress-num">01</span><span class="progress-label">Producto</span>
+    </div>
+    <div class="progress-line"></div>
+    <div class="progress-step" data-step="2">
+      <span class="progress-num">02</span><span class="progress-label">Envío</span>
+    </div>
+    <div class="progress-line"></div>
+    <div class="progress-step" data-step="3">
+      <span class="progress-num">03</span><span class="progress-label">Pago de prueba</span>
+    </div>
+  </nav>
+
+  <!-- ============ FORMULARIO DE PEDIDO ============ -->
+  <section class="order-panel is-hidden" id="orderPanel">
+    <form id="orderForm" novalidate>
+
+      <!-- Bloque envío -->
+      <fieldset class="form-block" id="shippingBlock">
+        <legend class="form-block-title">Datos de envío</legend>
+
+        <div class="form-grid">
+          <div class="form-field form-field--full">
+            <label for="fullName">Nombre completo</label>
+            <input type="text" id="fullName" name="fullName" autocomplete="name" required>
+            <p class="field-error" data-error-for="fullName" hidden></p>
+          </div>
+
+          <div class="form-field form-field--full">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" autocomplete="email" required>
+            <p class="field-error" data-error-for="email" hidden></p>
+          </div>
+
+          <div class="form-field form-field--full">
+            <label for="address">Dirección</label>
+            <input type="text" id="address" name="address" autocomplete="street-address" required>
+            <p class="field-error" data-error-for="address" hidden></p>
+          </div>
+
+          <div class="form-field">
+            <label for="city">Ciudad</label>
+            <input type="text" id="city" name="city" autocomplete="address-level2" required>
+            <p class="field-error" data-error-for="city" hidden></p>
+          </div>
+
+          <div class="form-field">
+            <label for="postalCode">Código postal</label>
+            <input type="text" id="postalCode" name="postalCode" autocomplete="postal-code" required>
+            <p class="field-error" data-error-for="postalCode" hidden></p>
+          </div>
+
+          <div class="form-field form-field--full">
+            <label for="country">País</label>
+            <input type="text" id="country" name="country" autocomplete="country-name" required>
+            <p class="field-error" data-error-for="country" hidden></p>
+          </div>
+        </div>
+      </fieldset>
+
+      <!-- Bloque pago de prueba -->
+      <fieldset class="form-block form-block--test" id="paymentBlock">
+        <legend class="form-block-title">
+          <span class="test-flask" aria-hidden="true">🧪</span> Pago de prueba
+        </legend>
+
+        <div class="form-field form-field--full">
+          <label for="testCode">Código de prueba</label>
+          <input type="text" id="testCode" name="testCode" placeholder="Escribe cualquier texto" autocomplete="off">
+        </div>
+
+        <p class="test-disclaimer">Esta es una simulación. No se realiza ningún pago real.</p>
+      </fieldset>
+
+      <p class="form-summary-note" id="formGeneralError" hidden></p>
+
+      <button type="submit" class="btn-submit" id="submitBtn">
+        <span class="btn-submit-text">Realizar pedido de prueba</span>
+        <span class="btn-spinner" aria-hidden="true"></span>
+      </button>
+
+    </form>
+  </section>
+
+  <!-- ============ CONFIRMACIÓN ============ -->
+  <section class="confirm-panel is-hidden" id="confirmPanel" aria-live="polite">
+    <div class="confirm-mark">🎉</div>
+    <h2 class="confirm-title">¡PEDIDO DE PRUEBA REALIZADO!</h2>
+    <p class="confirm-sub">Tu pedido de prueba de SORYNX ha sido registrado correctamente.</p>
+
+    <dl class="confirm-details">
+      <div class="confirm-row">
+        <dt>Producto</dt><dd>SORYNX DARK ANGEL TEE</dd>
+      </div>
+      <div class="confirm-row">
+        <dt>Talla</dt><dd id="confirmSize">—</dd>
+      </div>
+      <div class="confirm-row">
+        <dt>Precio</dt><dd>0,00&nbsp;€</dd>
+      </div>
+      <div class="confirm-row">
+        <dt>Número de pedido</dt><dd id="confirmOrderId">—</dd>
+      </div>
+      <div class="confirm-row">
+        <dt>Estado</dt><dd class="confirm-status">PEDIDO DE PRUEBA — NO PAGADO</dd>
+      </div>
+    </dl>
+
+    <p class="confirm-thanks">Gracias por probar SORYNX.</p>
+    <button type="button" class="btn-restart" id="restartBtn">Hacer otro pedido de prueba</button>
+  </section>
+
+</main>
+
+<footer class="test-footer">
+  <p>SORYNX · Entorno de simulación de compra · Sin pasarela de pago activa</p>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>
