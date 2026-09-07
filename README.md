@@ -1,81 +1,120 @@
-# SORYNX — Sitio web oficial
+# SORYNX — Checkout de prueba
 
-Web preparada para ser la futura tienda online de **SORYNX**. Diseño en negro y blanco, estética premium / streetwear, con la estructura lista para añadir productos reales cuando estén disponibles.
+Simulación de compra de la **SORYNX DARK ANGEL TEE** (precio 0,00 €) para
+probar el flujo completo antes de integrar un cobro real (Stripe u otro).
+No hay ningún sistema de pago real conectado.
 
-## Estructura del proyecto
+## Estructura
 
 ```
-sorynx-website/
-├── index.html          → Toda la estructura y el contenido de la página
-├── css/
-│   └── style.css       → Estilos, colores, tipografía y animaciones
-├── js/
-│   └── main.js         → Menú móvil, scroll, animaciones y cursor
-├── assets/             → Aquí van las fotos de producto cuando existan
-└── README.md
+sorynx-test-checkout/
+├── public/
+│   ├── index.html        ← página del checkout de prueba
+│   ├── css/style.css
+│   ├── js/main.js
+│   └── img/
+│       ├── tee_flat_front.jpg   ← imagen del producto (frontal)
+│       └── tee_flat_back.jpg    ← imagen del producto (trasera)
+├── api/
+│   └── order.js           ← función serverless (recibe el pedido y envía el email)
+├── package.json
+├── vercel.json
+└── .env.example
 ```
 
-No hay dependencias ni build: es HTML/CSS/JS puro. Se abre directamente o se sube tal cual a cualquier hosting estático.
+## 1. Dónde poner tu imagen de la camiseta
 
-## Cómo subirlo a GitHub
+Ya incluí las fotos recortadas de tu mockup en `public/img/`
+(`tee_flat_front.jpg` y `tee_flat_back.jpg`). Si más adelante quieres
+sustituirlas por fotos definitivas del producto, guarda los nuevos
+archivos con esos mismos nombres en `public/img/`, o cambia las rutas
+`src="img/..."` en `public/index.html`.
 
-1. Descomprime el zip.
-2. Crea un repositorio nuevo en GitHub (por ejemplo `sorynx-website`).
-3. Dentro de la carpeta descomprimida:
-   ```bash
-   git init
-   git add .
-   git commit -m "Primera versión del sitio SORYNX"
-   git branch -M main
-   git remote add origin https://github.com/TU-USUARIO/sorynx-website.git
-   git push -u origin main
-   ```
-4. Para publicarlo gratis con **GitHub Pages**:
-   - Ve a `Settings → Pages` en el repositorio.
-   - En "Source" elige la rama `main` y la carpeta `/ (root)`.
-   - Guarda. En un par de minutos la web estará en
-     `https://TU-USUARIO.github.io/sorynx-website/`.
+## 2. Dónde poner el email que recibe los pedidos
 
-## Cómo añadir un producto real
+En la variable de entorno `ADMIN_EMAIL` (ver paso 4). Ahora mismo está
+puesta a modo de ejemplo con `ssorynx@gmail.com` en `.env.example` — es
+el email que ya aparece como contacto en tu web actual, cámbialo si
+quieres recibir los pedidos en otra dirección.
 
-Abre `index.html` y busca la sección `<!-- ============ TIENDA / PRODUCTOS ============ -->`. Cada producto es un bloque:
+## 3. Instalar dependencias
 
-```html
-<article class="product-card">
-  <div class="product-index">01 / 05</div>
-  <div class="product-media">
-    <div class="placeholder-mark">S</div>
-  </div>
-  <div class="product-info">
-    <h3 class="product-name">Próximamente</h3>
-    <p class="product-price">— — —</p>
-    <button class="product-btn" disabled>Aún no disponible</button>
-  </div>
-</article>
+```bash
+npm install
 ```
 
-Para activarlo:
+## 4. Configurar las variables de entorno (envío de email)
 
-1. Sustituye `<div class="placeholder-mark">S</div>` por una imagen real:
-   ```html
-   <img src="assets/nombre-del-producto.jpg" alt="Nombre del producto">
-   ```
-2. Cambia `Próximamente` por el nombre real de la prenda.
-3. Cambia `— — —` por el precio, por ejemplo `49,90 €`.
-4. Quita el atributo `disabled` del botón y cambia el texto a `Comprar` (o conéctalo a tu pasarela de pago / plataforma de e-commerce).
+Copia `.env.example` como `.env` para probar en local, **y además**
+añade las mismas claves en Vercel:
 
-Puedes duplicar el bloque `<article class="product-card">` completo para añadir un sexto, séptimo, etc. producto: la cuadrícula se reorganiza sola, no hace falta tocar el CSS.
+`Project Settings → Environment Variables`
 
-## Personalización rápida
+| Variable     | Qué es                                                                 |
+|--------------|-------------------------------------------------------------------------|
+| `SMTP_HOST`  | Servidor SMTP (con Gmail: `smtp.gmail.com`)                            |
+| `SMTP_PORT`  | Puerto SMTP (465 con SSL, o 587)                                        |
+| `SMTP_USER`  | Cuenta de email que envía la notificación                              |
+| `SMTP_PASS`  | Contraseña de aplicación (**no** tu contraseña normal de Gmail)         |
+| `ADMIN_EMAIL`| Email donde quieres recibir los pedidos de prueba                      |
 
-- **Colores:** todos los colores están centralizados como variables al principio de `css/style.css` (bloque `:root`). Cambiar `--black` o `--off-white` actualiza toda la web.
-- **Textos:** el eslogan, la sección "Sobre SORYNX" y los textos del footer están directamente en `index.html`, en español y listos para editar.
-- **Redes sociales:** en el `<footer>`, sustituye los `href="#"` de Instagram / TikTok / X por tus enlaces reales.
-- **Email de contacto:** cambia `contacto@sorynx.com` en el footer por el correo real de la marca.
+Para Gmail necesitas una "contraseña de aplicación": actívala en
+https://myaccount.google.com/apppasswords (requiere verificación en dos
+pasos activada en la cuenta). Nunca escribas esta contraseña directamente
+en el código ni en el HTML — solo va en las variables de entorno.
 
-## Notas técnicas
+## 5. Probar en local
 
-- Tipografías: `Unbounded` (logo y titulares) e `Inter` (texto), cargadas desde Google Fonts.
-- Sin frameworks ni librerías externas de JavaScript.
-- Menú hamburguesa, scroll suave y animaciones de aparición funcionan sin dependencias.
-- Se respeta `prefers-reduced-motion` para usuarios que desactivan animaciones en su sistema.
+```bash
+npx vercel dev
+```
+
+Abre `http://localhost:3000`.
+
+## 6. Desplegar en Vercel
+
+```bash
+npx vercel --prod
+```
+
+(o conecta el repositorio desde el panel de Vercel). Recuerda añadir las
+variables de entorno del paso 4 antes del primer despliegue, si no el
+formulario funcionará pero el email no se enviará (verás el aviso en los
+logs de la función `api/order`).
+
+## Flujo completo
+
+1. El usuario elige una talla (S / M / L / XL) → se habilita "Continuar".
+2. Rellena el formulario de envío (nombre, email, dirección, ciudad,
+   código postal, país) — todos obligatorios.
+3. Ve la sección "🧪 Pago de prueba" con el campo "Código de prueba"
+   (acepta cualquier texto, no se guarda ni se envía a ningún sitio).
+4. Pulsa "Realizar pedido de prueba":
+   - Si falta algún dato o la talla, se marcan los campos y se explica
+     qué falta.
+   - Si todo es correcto, el formulario se envía a `/api/order`.
+5. `api/order.js` valida los datos otra vez en el servidor, genera un
+   número de pedido único y envía el email a `ADMIN_EMAIL` con todos los
+   datos del pedido (sin el código de prueba).
+6. El usuario ve la pantalla de confirmación con el número de pedido y
+   el estado "PEDIDO DE PRUEBA — NO PAGADO".
+
+## Seguridad ya aplicada
+
+- No hay contraseñas ni claves en el HTML/JS del navegador — todo pasa
+  por variables de entorno del servidor.
+- No se piden número de tarjeta, CVV ni caducidad en ningún momento.
+- El "Código de prueba" solo vive en el navegador: nunca se manda al
+  backend ni aparece en el email.
+- Los datos se validan tanto en el navegador como en el servidor
+  (`api/order.js`), y se sanean antes de insertarlos en el email.
+- La página lleva `<meta name="robots" content="noindex, nofollow">`
+  para que no se indexe mientras es un entorno de prueba.
+
+## Conectar Stripe más adelante
+
+Cuando quieras cobrar de verdad, el sitio donde se integraría Stripe es
+el bloque "🧪 Pago de prueba" en `public/index.html` (sustituyéndolo por
+Stripe Elements/Checkout) y el punto en `api/order.js` donde hoy se
+genera `orderId` — ahí es donde crearías el `PaymentIntent` o la sesión
+de Stripe Checkout antes de confirmar el pedido.
