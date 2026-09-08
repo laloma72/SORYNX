@@ -23,6 +23,10 @@
 
   <style>
 
+    /* =========================
+       RESET
+    ========================= */
+
     * {
       margin: 0;
       padding: 0;
@@ -41,6 +45,7 @@
       font-family: "Inter", sans-serif;
       overflow: hidden;
     }
+
 
     /* =========================
        PÁGINA
@@ -61,12 +66,13 @@
 
       background:
         radial-gradient(
-          circle at center,
-          rgba(255,255,255,0.055),
+          circle at 50% 45%,
+          rgba(255, 255, 255, 0.055),
           transparent 38%
         ),
         #050505;
     }
+
 
     /* =========================
        LÍNEAS
@@ -76,7 +82,7 @@
       position: absolute;
       pointer-events: none;
 
-      background: rgba(255,255,255,0.08);
+      background: rgba(255, 255, 255, 0.08);
     }
 
     .line-horizontal {
@@ -95,6 +101,7 @@
       left: 50%;
     }
 
+
     /* =========================
        CÍRCULO
     ========================= */
@@ -105,7 +112,8 @@
       width: min(420px, 80vw);
       height: min(420px, 80vw);
 
-      border: 1px solid rgba(255,255,255,0.08);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+
       border-radius: 50%;
 
       animation: pulse 5s ease-in-out infinite;
@@ -118,7 +126,8 @@
 
       inset: 8%;
 
-      border: 1px solid rgba(255,255,255,0.045);
+      border: 1px solid rgba(255, 255, 255, 0.045);
+
       border-radius: 50%;
     }
 
@@ -136,6 +145,7 @@
       }
 
     }
+
 
     /* =========================
        CONTENIDO
@@ -158,8 +168,9 @@
       padding: 40px 20px 90px;
     }
 
+
     /* =========================
-       SORYNX
+       MARCA
     ========================= */
 
     .brand {
@@ -171,10 +182,13 @@
 
       letter-spacing: 0.08em;
 
+      text-align: center;
+
       margin-bottom: 60px;
 
       animation: fadeDown 1s ease forwards;
     }
+
 
     /* =========================
        ESTADO
@@ -198,7 +212,9 @@
 
       text-transform: uppercase;
 
-      color: rgba(255,255,255,0.55);
+      color: rgba(255, 255, 255, 0.55);
+
+      text-align: center;
 
       animation: fadeUp 1s 0.2s ease both;
     }
@@ -229,16 +245,24 @@
 
     }
 
+
     /* =========================
        TÍTULO
     ========================= */
 
     .title {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+      position: relative;
 
       width: 100%;
+
+      display: flex;
+
+      flex-direction: column;
+
+      align-items: center;
+      justify-content: center;
+
+      text-align: center;
 
       font-family: "Unbounded", sans-serif;
 
@@ -246,14 +270,7 @@
 
       text-transform: uppercase;
 
-      text-align: center;
-
-      /*
-        CLAVE:
-        el tamaño se adapta al ancho
-        de la pantalla.
-      */
-      font-size: min(8vw, 100px);
+      font-size: min(7vw, 100px);
 
       line-height: 1;
 
@@ -267,8 +284,12 @@
     .title span {
       display: block;
 
-      width: max-content;
-      max-width: 100%;
+      width: auto;
+
+      margin-left: auto;
+      margin-right: auto;
+
+      text-align: center;
 
       white-space: nowrap;
     }
@@ -278,8 +299,10 @@
 
       color: transparent;
 
-      -webkit-text-stroke: 1px rgba(255,255,255,0.8);
+      -webkit-text-stroke:
+        1px rgba(255, 255, 255, 0.8);
     }
+
 
     /* =========================
        SUBTÍTULO
@@ -287,11 +310,12 @@
 
     .subtitle {
       width: 100%;
+
       max-width: 520px;
 
-      margin-top: 35px;
+      margin: 35px auto 0;
 
-      color: rgba(255,255,255,0.5);
+      color: rgba(255, 255, 255, 0.5);
 
       font-size: 12px;
 
@@ -303,6 +327,7 @@
 
       animation: fadeUp 1s 0.5s ease both;
     }
+
 
     /* =========================
        FOOTER
@@ -326,10 +351,11 @@
 
       text-transform: uppercase;
 
-      color: rgba(255,255,255,0.25);
+      color: rgba(255, 255, 255, 0.25);
 
       animation: fadeUp 1s 0.7s ease both;
     }
+
 
     /* =========================
        ANIMACIONES
@@ -363,6 +389,7 @@
 
     }
 
+
     /* =========================
        MÓVIL
     ========================= */
@@ -370,33 +397,56 @@
     @media (max-width: 600px) {
 
       .content {
-        padding: 30px 8px 80px;
+        padding: 30px 5px 80px;
       }
 
       .brand {
         font-size: 22px;
+
         margin-bottom: 45px;
       }
 
       .status {
         font-size: 8px;
+
         letter-spacing: 0.16em;
+
         margin-bottom: 22px;
       }
 
-      /*
-        PRÓXIMAMENTE ocupa prácticamente
-        todo el ancho disponible.
-      */
       .title {
-        font-size: 7.2vw;
+        width: 100%;
+
+        display: flex;
+
+        flex-direction: column;
+
+        align-items: center;
+        justify-content: center;
+
+        text-align: center;
+
+        /*
+          El texto siempre queda
+          en una sola línea.
+        */
+        font-size: 7vw;
 
         letter-spacing: -0.075em;
 
         line-height: 1;
+
+        white-space: nowrap;
       }
 
       .title span {
+        width: auto;
+
+        margin-left: auto;
+        margin-right: auto;
+
+        text-align: center;
+
         white-space: nowrap;
       }
 
@@ -429,19 +479,21 @@
 
     }
 
+
     /* =========================
-       MÓVILES PEQUEÑOS
+       MÓVIL PEQUEÑO
     ========================= */
 
     @media (max-width: 380px) {
 
       .content {
-        padding-left: 5px;
-        padding-right: 5px;
+        padding-left: 3px;
+        padding-right: 3px;
       }
 
       .brand {
         font-size: 20px;
+
         margin-bottom: 38px;
       }
 
@@ -450,12 +502,14 @@
       }
 
       .title {
-        font-size: 6.8vw;
+        font-size: 6.5vw;
+
         letter-spacing: -0.075em;
       }
 
       .subtitle {
         max-width: 290px;
+
         font-size: 9px;
       }
 
@@ -469,6 +523,7 @@
       }
 
     }
+
 
     /* =========================
        PANTALLAS BAJAS
@@ -502,30 +557,46 @@
   </style>
 </head>
 
+
 <body>
 
   <main class="page">
 
+    <!-- Líneas decorativas -->
     <div class="line line-horizontal"></div>
     <div class="line line-vertical"></div>
 
+
+    <!-- Círculo -->
     <div class="orb"></div>
 
+
+    <!-- Contenido -->
     <div class="content">
 
       <div class="brand">
         SORYNX
       </div>
 
+
       <div class="status">
         <span class="status-dot"></span>
         EN DESARROLLO
       </div>
 
+
       <h1 class="title">
-        <span>PRÓXIMAMENTE</span>
-        <span class="outline">SORYNX</span>
+
+        <span>
+          PRÓXIMAMENTE
+        </span>
+
+        <span class="outline">
+          SORYNX
+        </span>
+
       </h1>
+
 
       <p class="subtitle">
         Estamos construyendo algo diferente.
@@ -534,6 +605,8 @@
 
     </div>
 
+
+    <!-- Footer -->
     <div class="footer">
       DEFINE YOUR PRESENCE.
     </div>
