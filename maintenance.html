@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -47,24 +46,27 @@
       width: 100%;
       min-height: 100vh;
       min-height: 100svh;
+
       display: flex;
       align-items: center;
       justify-content: center;
+
       overflow: hidden;
+
       background:
         radial-gradient(
           circle at 50% 45%,
-          rgba(255,255,255,0.055),
+          rgba(255, 255, 255, 0.055),
           transparent 35%
         ),
         #050505;
     }
 
-    /* LÍNEAS */
+    /* Líneas decorativas */
 
     .line {
       position: absolute;
-      background: rgba(255,255,255,0.08);
+      background: rgba(255, 255, 255, 0.08);
       pointer-events: none;
     }
 
@@ -82,27 +84,33 @@
       left: 50%;
     }
 
-    /* CÍRCULO */
+    /* Círculo */
 
     .orb {
       position: absolute;
+
       width: min(420px, 80vw);
       height: min(420px, 80vw);
-      border: 1px solid rgba(255,255,255,0.08);
+
+      border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 50%;
+
       animation: pulse 5s ease-in-out infinite;
     }
 
     .orb::before {
       content: "";
+
       position: absolute;
       inset: 8%;
-      border: 1px solid rgba(255,255,255,0.045);
+
+      border: 1px solid rgba(255, 255, 255, 0.045);
       border-radius: 50%;
     }
 
     @keyframes pulse {
-      0%, 100% {
+      0%,
+      100% {
         transform: scale(0.96);
         opacity: 0.55;
       }
@@ -113,59 +121,78 @@
       }
     }
 
-    /* CONTENIDO */
+    /* Contenido */
 
     .content {
       position: relative;
       z-index: 2;
+
       width: 100%;
       max-width: 1100px;
+
       padding: 40px 24px 90px;
-      text-align: center;
 
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
+
+      text-align: center;
     }
+
+    /* Logo */
 
     .brand {
       font-family: "Unbounded", sans-serif;
+
       font-size: clamp(22px, 4vw, 42px);
       font-weight: 900;
+
       letter-spacing: 0.08em;
+
       margin-bottom: clamp(45px, 8vh, 75px);
+
       animation: fadeDown 1s ease forwards;
     }
+
+    /* Estado */
 
     .status {
       display: flex;
       align-items: center;
       justify-content: center;
+
       gap: 10px;
 
       margin-bottom: 25px;
 
       font-size: clamp(9px, 1.2vw, 11px);
       font-weight: 500;
+
       letter-spacing: 0.22em;
       text-transform: uppercase;
-      color: rgba(255,255,255,0.55);
+
+      color: rgba(255, 255, 255, 0.55);
 
       animation: fadeUp 1s 0.2s ease both;
     }
 
     .status-dot {
       flex: 0 0 auto;
+
       width: 7px;
       height: 7px;
+
       border-radius: 50%;
+
       background: #fff;
+
       animation: blink 1.8s ease-in-out infinite;
     }
 
     @keyframes blink {
-      0%, 100% {
+      0%,
+      100% {
         opacity: 0.25;
       }
 
@@ -174,18 +201,33 @@
       }
     }
 
-    /* TÍTULO */
+    /* Título */
 
     .title {
       width: 100%;
+      max-width: 100%;
+
       font-family: "Unbounded", sans-serif;
-      font-size: clamp(34px, 8vw, 110px);
+
+      /*
+        El tamaño se adapta automáticamente
+        para que PRÓXIMAMENTE quepa entero.
+      */
+      font-size: clamp(18px, 7vw, 100px);
+
       line-height: 1.05;
       font-weight: 900;
-      letter-spacing: -0.055em;
+
+      letter-spacing: -0.06em;
+
       text-transform: uppercase;
       text-align: center;
-      overflow-wrap: anywhere;
+
+      /*
+        IMPORTANTE:
+        evita que la E salte a otra línea.
+      */
+      white-space: nowrap;
 
       animation: fadeUp 1s 0.35s ease both;
     }
@@ -193,51 +235,66 @@
     .title span {
       display: block;
       width: 100%;
+      white-space: nowrap;
     }
 
     .title .outline {
       color: transparent;
-      -webkit-text-stroke: clamp(0.7px, 0.12vw, 1.2px) rgba(255,255,255,0.8);
+
+      -webkit-text-stroke:
+        clamp(0.7px, 0.12vw, 1.2px)
+        rgba(255, 255, 255, 0.8);
+
       margin-top: 12px;
     }
 
-    /* SUBTÍTULO */
+    /* Subtítulo */
 
     .subtitle {
       width: 100%;
       max-width: 520px;
+
       margin: 35px auto 0;
 
-      color: rgba(255,255,255,0.5);
+      color: rgba(255, 255, 255, 0.5);
+
       font-size: clamp(11px, 1.5vw, 13px);
+
       line-height: 1.8;
+
       letter-spacing: 0.04em;
+
       text-align: center;
 
       animation: fadeUp 1s 0.5s ease both;
     }
 
-    /* FOOTER */
+    /* Footer */
 
     .footer {
       position: absolute;
+
       bottom: 25px;
       left: 0;
-      width: 100%;
 
-      text-align: center;
+      width: 100%;
 
       padding: 0 20px;
 
+      text-align: center;
+
       font-size: 9px;
+
       letter-spacing: 0.18em;
+
       text-transform: uppercase;
-      color: rgba(255,255,255,0.25);
+
+      color: rgba(255, 255, 255, 0.25);
 
       animation: fadeUp 1s 0.7s ease both;
     }
 
-    /* ANIMACIONES */
+    /* Animaciones */
 
     @keyframes fadeUp {
       from {
@@ -268,7 +325,7 @@
     @media (max-width: 600px) {
 
       .content {
-        padding: 30px 18px 80px;
+        padding: 30px 12px 80px;
       }
 
       .brand {
@@ -282,12 +339,20 @@
 
       .title {
         /*
-          Evita que PRÓXIMAMENTE se salga
-          de la pantalla en teléfonos pequeños.
+          Más pequeño en móvil para garantizar
+          que PRÓXIMAMENTE quepa entero.
         */
-        font-size: clamp(28px, 9vw, 52px);
-        letter-spacing: -0.045em;
+        font-size: clamp(16px, 8vw, 52px);
+
+        letter-spacing: -0.065em;
+
         line-height: 1.08;
+
+        white-space: nowrap;
+      }
+
+      .title span {
+        white-space: nowrap;
       }
 
       .title .outline {
@@ -296,8 +361,11 @@
 
       .subtitle {
         max-width: 330px;
+
         margin-top: 28px;
+
         font-size: 11px;
+
         line-height: 1.7;
       }
 
@@ -308,18 +376,20 @@
 
       .footer {
         bottom: 18px;
+
         font-size: 7px;
+
         letter-spacing: 0.14em;
       }
     }
 
-    /* TELÉFONOS MUY PEQUEÑOS */
+    /* MÓVILES MUY PEQUEÑOS */
 
     @media (max-width: 380px) {
 
       .content {
-        padding-left: 14px;
-        padding-right: 14px;
+        padding-left: 10px;
+        padding-right: 10px;
       }
 
       .brand {
@@ -332,7 +402,13 @@
       }
 
       .title {
-        font-size: 25px;
+        /*
+          Tamaño reducido para pantallas
+          especialmente estrechas.
+        */
+        font-size: 16px;
+
+        letter-spacing: -0.06em;
       }
 
       .subtitle {
@@ -350,7 +426,7 @@
       }
     }
 
-    /* PANTALLAS BAJAS */
+    /* Pantallas con poca altura */
 
     @media (max-height: 650px) {
 
@@ -418,4 +494,3 @@
 
 </body>
 </html>
-```
