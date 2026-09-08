@@ -3,199 +3,1445 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>SORYNX | Pedido de prueba — DARK ANGEL TEE</title>
-<meta name="description" content="Simulación de compra de SORYNX. Ningún pago real se procesa en esta página.">
+
+<meta
+  name="description"
+  content="Simulación de compra de SORYNX. Ningún pago real se procesa en esta página."
+>
+
 <meta name="robots" content="noindex, nofollow">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;800;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<link
+  href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;800;900&family=Inter:wght@300;400;500;600&display=swap"
+  rel="stylesheet"
+>
+
 <link rel="stylesheet" href="css/style.css">
+
+<style>
+
+/* =========================================================
+   GALERÍA SORYNX
+   ========================================================= */
+
+.product-media {
+  position: relative;
+}
+
+.gallery {
+  position: relative;
+  width: 100%;
+}
+
+.gallery-main {
+  position: relative;
+  overflow: hidden;
+  cursor: zoom-in;
+  background: #f3f3f3;
+  min-height: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gallery-main img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-height: 650px;
+  object-fit: contain;
+  transition:
+    opacity 0.25s ease,
+    transform 0.5s cubic-bezier(.2,.7,.2,1);
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.gallery-main.is-zoomed {
+  cursor: zoom-out;
+}
+
+.gallery-main.is-zoomed img {
+  transform: scale(1.65);
+}
+
+/* Flechas */
+
+.gallery-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 5;
+
+  width: 46px;
+  height: 46px;
+
+  border: 1px solid rgba(0,0,0,0.15);
+  background: rgba(255,255,255,0.92);
+  color: #050505;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-family: "Inter", sans-serif;
+  font-size: 20px;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease,
+    opacity 0.2s ease;
+
+  backdrop-filter: blur(8px);
+}
+
+.gallery-arrow:hover {
+  background: #050505;
+  color: #ffffff;
+}
+
+.gallery-arrow:active {
+  transform: translateY(-50%) scale(0.94);
+}
+
+.gallery-prev {
+  left: 18px;
+}
+
+.gallery-next {
+  right: 18px;
+}
+
+/* Contador */
+
+.gallery-counter {
+  position: absolute;
+  right: 18px;
+  bottom: 18px;
+  z-index: 5;
+
+  padding: 8px 11px;
+
+  background: rgba(5,5,5,0.82);
+  color: #ffffff;
+
+  font-family: "Unbounded", sans-serif;
+  font-size: 9px;
+  letter-spacing: 0.12em;
+
+  backdrop-filter: blur(8px);
+}
+
+/* Miniaturas */
+
+.gallery-thumbnails {
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  gap: 7px;
+
+  margin-top: 12px;
+}
+
+.gallery-thumbnail {
+  position: relative;
+
+  aspect-ratio: 1 / 1;
+
+  padding: 0;
+  border: 1px solid transparent;
+
+  background: #f2f2f2;
+
+  cursor: pointer;
+
+  overflow: hidden;
+
+  transition:
+    border-color 0.2s ease,
+    opacity 0.2s ease,
+    transform 0.2s ease;
+}
+
+.gallery-thumbnail img {
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  object-fit: cover;
+
+  transition: transform 0.3s ease;
+}
+
+.gallery-thumbnail:hover img {
+  transform: scale(1.05);
+}
+
+.gallery-thumbnail:hover {
+  border-color: rgba(0,0,0,0.35);
+}
+
+.gallery-thumbnail.is-active {
+  border-color: #050505;
+}
+
+.gallery-thumbnail.is-active::after {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  border: 2px solid #ffffff;
+
+  box-shadow:
+    inset 0 0 0 1px #050505;
+
+  pointer-events: none;
+}
+
+/* =========================================================
+   TRANSICIÓN DE IMAGEN
+   ========================================================= */
+
+.gallery-main img.gallery-changing {
+  opacity: 0;
+  transform: scale(0.98);
+}
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+  .gallery-main {
+    min-height: 420px;
+  }
+
+  .gallery-thumbnails {
+    grid-template-columns: repeat(5, 1fr);
+  }
+
+}
+
+@media (max-width: 600px) {
+
+  .gallery-main {
+    min-height: 360px;
+  }
+
+  .gallery-arrow {
+    width: 40px;
+    height: 40px;
+
+    font-size: 17px;
+  }
+
+  .gallery-prev {
+    left: 10px;
+  }
+
+  .gallery-next {
+    right: 10px;
+  }
+
+  .gallery-counter {
+    right: 10px;
+    bottom: 10px;
+
+    font-size: 8px;
+  }
+
+  .gallery-thumbnails {
+    grid-template-columns: repeat(5, 1fr);
+    gap: 5px;
+
+    margin-top: 8px;
+  }
+
+}
+
+@media (max-width: 420px) {
+
+  .gallery-main {
+    min-height: 300px;
+  }
+
+  .gallery-thumbnails {
+    grid-template-columns: repeat(5, 1fr);
+  }
+
+}
+
+/* =========================================================
+   SWIPE / ZOOM
+   ========================================================= */
+
+.gallery-main {
+  touch-action: pan-y;
+}
+
+</style>
+
 </head>
+
 <body>
 
 <div class="grain"></div>
 
-<!-- ============ BANNER DE MODO PRUEBA ============ -->
+
+<!-- =========================================================
+     BANNER DE MODO PRUEBA
+     ========================================================= -->
+
 <div class="test-banner">
   <span class="test-banner-dot"></span>
   Entorno de prueba — no se procesan pagos reales ni se cobra dinero
 </div>
 
-<!-- ============ HEADER ============ -->
+
+<!-- =========================================================
+     HEADER
+     ========================================================= -->
+
 <header class="header">
-  <a href="#" class="logo">SORYNX</a>
-  <span class="header-tag">checkout&nbsp;de&nbsp;prueba</span>
+
+  <a href="#" class="logo">
+    SORYNX
+  </a>
+
+  <span class="header-tag">
+    checkout&nbsp;de&nbsp;prueba
+  </span>
+
 </header>
+
+
+<!-- =========================================================
+     CONTENIDO PRINCIPAL
+     ========================================================= -->
 
 <main class="shell">
 
-  <!-- ============ PRODUCTO ============ -->
+
+  <!-- =======================================================
+       PRODUCTO
+       ======================================================= -->
+
   <section class="product" aria-labelledby="product-name">
+
+
+    <!-- =====================================================
+         GALERÍA
+         ===================================================== -->
+
     <div class="product-media">
-      <div class="product-media-frame">
-        <img id="productImgFront" src="img/tee_flat_front.jpg" alt="SORYNX Dark Angel Tee — vista frontal">
-        <img id="productImgBack" src="img/tee_flat_back.jpg" alt="SORYNX Dark Angel Tee — vista trasera" class="is-hidden">
+
+      <div class="gallery" id="productGallery">
+
+
+        <!-- IMAGEN PRINCIPAL -->
+
+        <div
+          class="product-media-frame gallery-main"
+          id="galleryMain"
+          title="Pulsa para ampliar"
+        >
+
+          <img
+            id="productImgFront"
+            src="img/01-front.jpg"
+            alt="SORYNX Dark Angel Tee — vista frontal"
+          >
+
+          <div
+            class="gallery-counter"
+            id="galleryCounter"
+          >
+            1 / 9
+          </div>
+
+        </div>
+
+
+        <!-- FLECHA ANTERIOR -->
+
+        <button
+          type="button"
+          class="gallery-arrow gallery-prev"
+          id="galleryPrev"
+          aria-label="Vista anterior"
+        >
+          ←
+        </button>
+
+
+        <!-- FLECHA SIGUIENTE -->
+
+        <button
+          type="button"
+          class="gallery-arrow gallery-next"
+          id="galleryNext"
+          aria-label="Vista siguiente"
+        >
+          →
+        </button>
+
+
       </div>
-      <div class="media-switch" role="tablist" aria-label="Vista del producto">
-        <button type="button" class="media-switch-btn is-active" data-view="front" role="tab" aria-selected="true">Frontal</button>
-        <button type="button" class="media-switch-btn" data-view="back" role="tab" aria-selected="false">Trasera</button>
+
+
+      <!-- ===================================================
+           MINIATURAS
+           =================================================== -->
+
+      <div
+        class="gallery-thumbnails"
+        id="galleryThumbnails"
+        aria-label="Vistas del producto"
+      >
+
+        <button
+          type="button"
+          class="gallery-thumbnail is-active"
+          data-index="0"
+          aria-label="Vista frontal"
+          aria-current="true"
+        >
+          <img
+            src="img/01-front.jpg"
+            alt="Vista frontal"
+          >
+        </button>
+
+
+        <button
+          type="button"
+          class="gallery-thumbnail"
+          data-index="1"
+          aria-label="Vista trasera"
+        >
+          <img
+            src="img/02-back.jpg"
+            alt="Vista trasera"
+          >
+        </button>
+
+
+        <button
+          type="button"
+          class="gallery-thumbnail"
+          data-index="2"
+          aria-label="Vista tres cuartos"
+        >
+          <img
+            src="img/03-three-quarter.jpg"
+            alt="Vista tres cuartos"
+          >
+        </button>
+
+
+        <button
+          type="button"
+          class="gallery-thumbnail"
+          data-index="3"
+          aria-label="Vista lateral"
+        >
+          <img
+            src="img/04-side.jpg"
+            alt="Vista lateral"
+          >
+        </button>
+
+
+        <button
+          type="button"
+          class="gallery-thumbnail"
+          data-index="4"
+          aria-label="Detalle del cuello y logo"
+        >
+          <img
+            src="img/05-neck-logo-detail.jpg"
+            alt="Detalle del cuello y logo"
+          >
+        </button>
+
+
+        <button
+          type="button"
+          class="gallery-thumbnail"
+          data-index="5"
+          aria-label="Detalle gráfico trasero"
+        >
+          <img
+            src="img/06-back-graphic-detail.jpg"
+            alt="Detalle gráfico trasero"
+          >
+        </button>
+
+
+        <button
+          type="button"
+          class="gallery-thumbnail"
+          data-index="6"
+          aria-label="Detalle de manga"
+        >
+          <img
+            src="img/07-sleeve-detail.jpg"
+            alt="Detalle de manga"
+          >
+        </button>
+
+
+        <button
+          type="button"
+          class="gallery-thumbnail"
+          data-index="7"
+          aria-label="Camiseta doblada"
+        >
+          <img
+            src="img/08-folded.jpg"
+            alt="Camiseta doblada"
+          >
+        </button>
+
+
+        <button
+          type="button"
+          class="gallery-thumbnail"
+          data-index="8"
+          aria-label="Detalle inferior"
+        >
+          <img
+            src="img/09-bottom-graphic-detail.jpg"
+            alt="Detalle inferior"
+          >
+        </button>
+
+
       </div>
+
     </div>
+
+
+    <!-- =====================================================
+         INFORMACIÓN DEL PRODUCTO
+         ===================================================== -->
 
     <div class="product-info">
-      <p class="product-kicker">Colección Dark Angel</p>
-      <h1 class="product-name" id="product-name">SORYNX DARK ANGEL TEE</h1>
-      <p class="product-desc">Camiseta streetwear exclusiva de SORYNX. Diseño Dark Angel con estética oscura y premium.</p>
+
+      <p class="product-kicker">
+        Colección Dark Angel
+      </p>
+
+      <h1 class="product-name" id="product-name">
+        SORYNX DARK ANGEL TEE
+      </h1>
+
+      <p class="product-desc">
+        Camiseta streetwear exclusiva de SORYNX.
+        Diseño Dark Angel con estética oscura y premium.
+      </p>
+
 
       <div class="product-price-row">
-        <span class="product-price">0,00&nbsp;€</span>
-        <span class="price-tag">Pedido de prueba</span>
+
+        <span class="product-price">
+          0,00&nbsp;€
+        </span>
+
+        <span class="price-tag">
+          Pedido de prueba
+        </span>
+
       </div>
+
 
       <ul class="product-specs">
-        <li>100% algodón premium</li>
-        <li>Corte oversize</li>
-        <li>Serigrafía Dark Angel frontal y trasera</li>
+
+        <li>
+          100% algodón premium
+        </li>
+
+        <li>
+          Corte oversize
+        </li>
+
+        <li>
+          Serigrafía Dark Angel frontal y trasera
+        </li>
+
       </ul>
 
-      <!-- Selección de talla -->
+
+      <!-- ===================================================
+           SELECCIÓN DE TALLA
+           =================================================== -->
+
       <div class="field-block">
-        <label class="field-label" id="sizeLabel">Talla</label>
-        <div class="size-grid" role="radiogroup" aria-labelledby="sizeLabel">
-          <button type="button" class="size-btn" data-size="S" role="radio" aria-checked="false">S</button>
-          <button type="button" class="size-btn" data-size="M" role="radio" aria-checked="false">M</button>
-          <button type="button" class="size-btn" data-size="L" role="radio" aria-checked="false">L</button>
-          <button type="button" class="size-btn" data-size="XL" role="radio" aria-checked="false">XL</button>
+
+        <label
+          class="field-label"
+          id="sizeLabel"
+        >
+          Talla
+        </label>
+
+        <div
+          class="size-grid"
+          role="radiogroup"
+          aria-labelledby="sizeLabel"
+        >
+
+          <button
+            type="button"
+            class="size-btn"
+            data-size="S"
+            role="radio"
+            aria-checked="false"
+          >
+            S
+          </button>
+
+          <button
+            type="button"
+            class="size-btn"
+            data-size="M"
+            role="radio"
+            aria-checked="false"
+          >
+            M
+          </button>
+
+          <button
+            type="button"
+            class="size-btn"
+            data-size="L"
+            role="radio"
+            aria-checked="false"
+          >
+            L
+          </button>
+
+          <button
+            type="button"
+            class="size-btn"
+            data-size="XL"
+            role="radio"
+            aria-checked="false"
+          >
+            XL
+          </button>
+
         </div>
-        <p class="field-error" id="sizeError" hidden>Selecciona una talla para continuar.</p>
+
+        <p
+          class="field-error"
+          id="sizeError"
+          hidden
+        >
+          Selecciona una talla para continuar.
+        </p>
+
       </div>
 
-      <button type="button" class="btn-continue" id="continueBtn" disabled>
+
+      <button
+        type="button"
+        class="btn-continue"
+        id="continueBtn"
+        disabled
+      >
         Continuar con el pedido
       </button>
+
     </div>
+
   </section>
 
-  <!-- ============ PROGRESO ============ -->
-  <nav class="progress" id="progressNav" aria-label="Progreso del pedido">
-    <div class="progress-step is-active" data-step="1">
-      <span class="progress-num">01</span><span class="progress-label">Producto</span>
+
+  <!-- =======================================================
+       PROGRESO
+       ======================================================= -->
+
+  <nav
+    class="progress"
+    id="progressNav"
+    aria-label="Progreso del pedido"
+  >
+
+    <div
+      class="progress-step is-active"
+      data-step="1"
+    >
+      <span class="progress-num">
+        01
+      </span>
+
+      <span class="progress-label">
+        Producto
+      </span>
     </div>
+
+
     <div class="progress-line"></div>
-    <div class="progress-step" data-step="2">
-      <span class="progress-num">02</span><span class="progress-label">Envío</span>
+
+
+    <div
+      class="progress-step"
+      data-step="2"
+    >
+      <span class="progress-num">
+        02
+      </span>
+
+      <span class="progress-label">
+        Envío
+      </span>
     </div>
+
+
     <div class="progress-line"></div>
-    <div class="progress-step" data-step="3">
-      <span class="progress-num">03</span><span class="progress-label">Pago de prueba</span>
+
+
+    <div
+      class="progress-step"
+      data-step="3"
+    >
+      <span class="progress-num">
+        03
+      </span>
+
+      <span class="progress-label">
+        Pago de prueba
+      </span>
     </div>
+
   </nav>
 
-  <!-- ============ FORMULARIO DE PEDIDO ============ -->
-  <section class="order-panel is-hidden" id="orderPanel">
-    <form id="orderForm" novalidate>
 
-      <!-- Bloque envío -->
-      <fieldset class="form-block" id="shippingBlock">
-        <legend class="form-block-title">Datos de envío</legend>
+  <!-- =======================================================
+       FORMULARIO DE PEDIDO
+       ======================================================= -->
 
-        <div class="form-grid">
-          <div class="form-field form-field--full">
-            <label for="fullName">Nombre completo</label>
-            <input type="text" id="fullName" name="fullName" autocomplete="name" required>
-            <p class="field-error" data-error-for="fullName" hidden></p>
-          </div>
+  <section
+    class="order-panel is-hidden"
+    id="orderPanel"
+  >
 
-          <div class="form-field form-field--full">
-            <label for="email">Email</label>
-            <input type="email" id="email" name="email" autocomplete="email" required>
-            <p class="field-error" data-error-for="email" hidden></p>
-          </div>
+    <form
+      id="orderForm"
+      novalidate
+    >
 
-          <div class="form-field form-field--full">
-            <label for="address">Dirección</label>
-            <input type="text" id="address" name="address" autocomplete="street-address" required>
-            <p class="field-error" data-error-for="address" hidden></p>
-          </div>
 
-          <div class="form-field">
-            <label for="city">Ciudad</label>
-            <input type="text" id="city" name="city" autocomplete="address-level2" required>
-            <p class="field-error" data-error-for="city" hidden></p>
-          </div>
+      <!-- ===================================================
+           DATOS DE ENVÍO
+           =================================================== -->
 
-          <div class="form-field">
-            <label for="postalCode">Código postal</label>
-            <input type="text" id="postalCode" name="postalCode" autocomplete="postal-code" required>
-            <p class="field-error" data-error-for="postalCode" hidden></p>
-          </div>
+      <fieldset
+        class="form-block"
+        id="shippingBlock"
+      >
 
-          <div class="form-field form-field--full">
-            <label for="country">País</label>
-            <input type="text" id="country" name="country" autocomplete="country-name" required>
-            <p class="field-error" data-error-for="country" hidden></p>
-          </div>
-        </div>
-      </fieldset>
-
-      <!-- Bloque pago de prueba -->
-      <fieldset class="form-block form-block--test" id="paymentBlock">
         <legend class="form-block-title">
-          <span class="test-flask" aria-hidden="true">🧪</span> Pago de prueba
+          Datos de envío
         </legend>
 
-        <div class="form-field form-field--full">
-          <label for="testCode">Código de prueba</label>
-          <input type="text" id="testCode" name="testCode" placeholder="Escribe cualquier texto" autocomplete="off">
+
+        <div class="form-grid">
+
+
+          <div class="form-field form-field--full">
+
+            <label for="fullName">
+              Nombre completo
+            </label>
+
+            <input
+              type="text"
+              id="fullName"
+              name="fullName"
+              autocomplete="name"
+              required
+            >
+
+            <p
+              class="field-error"
+              data-error-for="fullName"
+              hidden
+            ></p>
+
+          </div>
+
+
+          <div class="form-field form-field--full">
+
+            <label for="email">
+              Email
+            </label>
+
+            <input
+              type="email"
+              id="email"
+              name="email"
+              autocomplete="email"
+              required
+            >
+
+            <p
+              class="field-error"
+              data-error-for="email"
+              hidden
+            ></p>
+
+          </div>
+
+
+          <div class="form-field form-field--full">
+
+            <label for="address">
+              Dirección
+            </label>
+
+            <input
+              type="text"
+              id="address"
+              name="address"
+              autocomplete="street-address"
+              required
+            >
+
+            <p
+              class="field-error"
+              data-error-for="address"
+              hidden
+            ></p>
+
+          </div>
+
+
+          <div class="form-field">
+
+            <label for="city">
+              Ciudad
+            </label>
+
+            <input
+              type="text"
+              id="city"
+              name="city"
+              autocomplete="address-level2"
+              required
+            >
+
+            <p
+              class="field-error"
+              data-error-for="city"
+              hidden
+            ></p>
+
+          </div>
+
+
+          <div class="form-field">
+
+            <label for="postalCode">
+              Código postal
+            </label>
+
+            <input
+              type="text"
+              id="postalCode"
+              name="postalCode"
+              autocomplete="postal-code"
+              required
+            >
+
+            <p
+              class="field-error"
+              data-error-for="postalCode"
+              hidden
+            ></p>
+
+          </div>
+
+
+          <div class="form-field form-field--full">
+
+            <label for="country">
+              País
+            </label>
+
+            <input
+              type="text"
+              id="country"
+              name="country"
+              autocomplete="country-name"
+              required
+            >
+
+            <p
+              class="field-error"
+              data-error-for="country"
+              hidden
+            ></p>
+
+          </div>
+
+
         </div>
 
-        <p class="test-disclaimer">Esta es una simulación. No se realiza ningún pago real.</p>
       </fieldset>
 
-      <p class="form-summary-note" id="formGeneralError" hidden></p>
 
-      <button type="submit" class="btn-submit" id="submitBtn">
-        <span class="btn-submit-text">Realizar pedido de prueba</span>
-        <span class="btn-spinner" aria-hidden="true"></span>
+      <!-- ===================================================
+           PAGO DE PRUEBA
+           =================================================== -->
+
+      <fieldset
+        class="form-block form-block--test"
+        id="paymentBlock"
+      >
+
+        <legend class="form-block-title">
+
+          <span
+            class="test-flask"
+            aria-hidden="true"
+          >
+            🧪
+          </span>
+
+          Pago de prueba
+
+        </legend>
+
+
+        <div class="form-field form-field--full">
+
+          <label for="testCode">
+            Código de prueba
+          </label>
+
+          <input
+            type="text"
+            id="testCode"
+            name="testCode"
+            placeholder="Escribe cualquier texto"
+            autocomplete="off"
+          >
+
+        </div>
+
+
+        <p class="test-disclaimer">
+          Esta es una simulación.
+          No se realiza ningún pago real.
+        </p>
+
+      </fieldset>
+
+
+      <p
+        class="form-summary-note"
+        id="formGeneralError"
+        hidden
+      ></p>
+
+
+      <button
+        type="submit"
+        class="btn-submit"
+        id="submitBtn"
+      >
+
+        <span class="btn-submit-text">
+          Realizar pedido de prueba
+        </span>
+
+        <span
+          class="btn-spinner"
+          aria-hidden="true"
+        ></span>
+
       </button>
 
+
     </form>
+
   </section>
 
-  <!-- ============ CONFIRMACIÓN ============ -->
-  <section class="confirm-panel is-hidden" id="confirmPanel" aria-live="polite">
-    <div class="confirm-mark">🎉</div>
-    <h2 class="confirm-title">¡PEDIDO DE PRUEBA REALIZADO!</h2>
-    <p class="confirm-sub">Tu pedido de prueba de SORYNX ha sido registrado correctamente.</p>
+
+  <!-- =======================================================
+       CONFIRMACIÓN
+       ======================================================= -->
+
+  <section
+    class="confirm-panel is-hidden"
+    id="confirmPanel"
+    aria-live="polite"
+  >
+
+    <div class="confirm-mark">
+      🎉
+    </div>
+
+
+    <h2 class="confirm-title">
+      ¡PEDIDO DE PRUEBA REALIZADO!
+    </h2>
+
+
+    <p class="confirm-sub">
+      Tu pedido de prueba de SORYNX ha sido registrado correctamente.
+    </p>
+
 
     <dl class="confirm-details">
+
+
       <div class="confirm-row">
-        <dt>Producto</dt><dd>SORYNX DARK ANGEL TEE</dd>
+
+        <dt>
+          Producto
+        </dt>
+
+        <dd>
+          SORYNX DARK ANGEL TEE
+        </dd>
+
       </div>
+
+
       <div class="confirm-row">
-        <dt>Talla</dt><dd id="confirmSize">—</dd>
+
+        <dt>
+          Talla
+        </dt>
+
+        <dd id="confirmSize">
+          —
+        </dd>
+
       </div>
+
+
       <div class="confirm-row">
-        <dt>Precio</dt><dd>0,00&nbsp;€</dd>
+
+        <dt>
+          Precio
+        </dt>
+
+        <dd>
+          0,00&nbsp;€
+        </dd>
+
       </div>
+
+
       <div class="confirm-row">
-        <dt>Número de pedido</dt><dd id="confirmOrderId">—</dd>
+
+        <dt>
+          Número de pedido
+        </dt>
+
+        <dd id="confirmOrderId">
+          —
+        </dd>
+
       </div>
+
+
       <div class="confirm-row">
-        <dt>Estado</dt><dd class="confirm-status">PEDIDO DE PRUEBA — NO PAGADO</dd>
+
+        <dt>
+          Estado
+        </dt>
+
+        <dd class="confirm-status">
+          PEDIDO DE PRUEBA — NO PAGADO
+        </dd>
+
       </div>
+
+
     </dl>
 
-    <p class="confirm-thanks">Gracias por probar SORYNX.</p>
-    <button type="button" class="btn-restart" id="restartBtn">Hacer otro pedido de prueba</button>
+
+    <p class="confirm-thanks">
+      Gracias por probar SORYNX.
+    </p>
+
+
+    <button
+      type="button"
+      class="btn-restart"
+      id="restartBtn"
+    >
+      Hacer otro pedido de prueba
+    </button>
+
   </section>
+
 
 </main>
 
+
+<!-- =========================================================
+     FOOTER
+     ========================================================= -->
+
 <footer class="test-footer">
-  <p>SORYNX · Entorno de simulación de compra · Sin pasarela de pago activa</p>
+
+  <p>
+    SORYNX · Entorno de simulación de compra ·
+    Sin pasarela de pago activa
+  </p>
+
 </footer>
 
+
+<!-- =========================================================
+     GALERÍA JAVASCRIPT
+     ========================================================= -->
+
+<script>
+
+document.addEventListener("DOMContentLoaded", () => {
+
+  const images = [
+    {
+      src: "img/01-front.jpg",
+      alt: "SORYNX Dark Angel Tee — vista frontal"
+    },
+    {
+      src: "img/02-back.jpg",
+      alt: "SORYNX Dark Angel Tee — vista trasera"
+    },
+    {
+      src: "img/03-three-quarter.jpg",
+      alt: "SORYNX Dark Angel Tee — vista tres cuartos"
+    },
+    {
+      src: "img/04-side.jpg",
+      alt: "SORYNX Dark Angel Tee — vista lateral"
+    },
+    {
+      src: "img/05-neck-logo-detail.jpg",
+      alt: "SORYNX Dark Angel Tee — detalle del cuello y logo"
+    },
+    {
+      src: "img/06-back-graphic-detail.jpg",
+      alt: "SORYNX Dark Angel Tee — detalle gráfico trasero"
+    },
+    {
+      src: "img/07-sleeve-detail.jpg",
+      alt: "SORYNX Dark Angel Tee — detalle de manga"
+    },
+    {
+      src: "img/08-folded.jpg",
+      alt: "SORYNX Dark Angel Tee — camiseta doblada"
+    },
+    {
+      src: "img/09-bottom-graphic-detail.jpg",
+      alt: "SORYNX Dark Angel Tee — detalle inferior"
+    }
+  ];
+
+
+  const mainImage =
+    document.getElementById("productImgFront");
+
+  const mainFrame =
+    document.getElementById("galleryMain");
+
+  const counter =
+    document.getElementById("galleryCounter");
+
+  const previousButton =
+    document.getElementById("galleryPrev");
+
+  const nextButton =
+    document.getElementById("galleryNext");
+
+  const thumbnails =
+    document.querySelectorAll(".gallery-thumbnail");
+
+
+  let currentIndex = 0;
+
+
+  /* =======================================================
+     CAMBIAR IMAGEN
+     ======================================================= */
+
+  function showImage(index) {
+
+    if (!mainImage) return;
+
+    currentIndex =
+      (index + images.length) % images.length;
+
+
+    mainFrame.classList.remove("is-zoomed");
+
+
+    mainImage.classList.add("gallery-changing");
+
+
+    setTimeout(() => {
+
+      mainImage.src =
+        images[currentIndex].src;
+
+      mainImage.alt =
+        images[currentIndex].alt;
+
+
+      counter.textContent =
+        `${currentIndex + 1} / ${images.length}`;
+
+
+      thumbnails.forEach((thumbnail, i) => {
+
+        const active =
+          i === currentIndex;
+
+        thumbnail.classList.toggle(
+          "is-active",
+          active
+        );
+
+        if (active) {
+
+          thumbnail.setAttribute(
+            "aria-current",
+            "true"
+          );
+
+        } else {
+
+          thumbnail.removeAttribute(
+            "aria-current"
+          );
+
+        }
+
+      });
+
+
+      mainImage.classList.remove(
+        "gallery-changing"
+      );
+
+    }, 180);
+
+  }
+
+
+  /* =======================================================
+     FLECHA ANTERIOR
+     ======================================================= */
+
+  if (previousButton) {
+
+    previousButton.addEventListener(
+      "click",
+      () => {
+
+        showImage(currentIndex - 1);
+
+      }
+    );
+
+  }
+
+
+  /* =======================================================
+     FLECHA SIGUIENTE
+     ======================================================= */
+
+  if (nextButton) {
+
+    nextButton.addEventListener(
+      "click",
+      () => {
+
+        showImage(currentIndex + 1);
+
+      }
+    );
+
+  }
+
+
+  /* =======================================================
+     MINIATURAS
+     ======================================================= */
+
+  thumbnails.forEach((thumbnail) => {
+
+    thumbnail.addEventListener(
+      "click",
+      () => {
+
+        const index =
+          Number(
+            thumbnail.dataset.index
+          );
+
+        showImage(index);
+
+      }
+    );
+
+  });
+
+
+  /* =======================================================
+     ZOOM
+     ======================================================= */
+
+  if (mainFrame) {
+
+    mainFrame.addEventListener(
+      "click",
+      (event) => {
+
+        if (
+          event.target === mainImage
+        ) {
+
+          mainFrame.classList.toggle(
+            "is-zoomed"
+          );
+
+        }
+
+      }
+    );
+
+  }
+
+
+  /* =======================================================
+     TECLADO
+     ======================================================= */
+
+  document.addEventListener(
+    "keydown",
+    (event) => {
+
+      if (event.key === "ArrowLeft") {
+
+        showImage(
+          currentIndex - 1
+        );
+
+      }
+
+      if (event.key === "ArrowRight") {
+
+        showImage(
+          currentIndex + 1
+        );
+
+      }
+
+      if (event.key === "Escape") {
+
+        mainFrame.classList.remove(
+          "is-zoomed"
+        );
+
+      }
+
+    }
+  );
+
+
+  /* =======================================================
+     SWIPE EN MÓVIL
+     ======================================================= */
+
+  let touchStartX = 0;
+  let touchEndX = 0;
+
+
+  if (mainFrame) {
+
+    mainFrame.addEventListener(
+      "touchstart",
+      (event) => {
+
+        touchStartX =
+          event.changedTouches[0].screenX;
+
+      },
+      {
+        passive: true
+      }
+    );
+
+
+    mainFrame.addEventListener(
+      "touchend",
+      (event) => {
+
+        touchEndX =
+          event.changedTouches[0].screenX;
+
+
+        const difference =
+          touchStartX - touchEndX;
+
+
+        if (Math.abs(difference) < 45) {
+          return;
+        }
+
+
+        if (difference > 0) {
+
+          showImage(
+            currentIndex + 1
+          );
+
+        } else {
+
+          showImage(
+            currentIndex - 1
+          );
+
+        }
+
+      },
+      {
+        passive: true
+      }
+    );
+
+  }
+
+});
+
+</script>
+
+
+<!-- =========================================================
+     JAVASCRIPT ORIGINAL DEL CHECKOUT
+     ========================================================= -->
+
 <script src="js/main.js"></script>
+
 </body>
 </html>
