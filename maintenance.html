@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -11,7 +12,7 @@
     content="SORYNX — En desarrollo. Muy pronto."
   >
 
-  <link rel="icon" type="image/png" href="img/logo.png">
+  <link rel="icon" type="image/png" href="/img/logo.png">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -22,7 +23,6 @@
   >
 
   <style>
-
     * {
       margin: 0;
       padding: 0;
@@ -37,15 +37,14 @@
 
     body {
       background: #050505;
-      color: #ffffff;
+      color: #fff;
       font-family: "Inter", sans-serif;
       overflow: hidden;
     }
 
-    /* ===== FONDO ===== */
-
     .page {
       position: relative;
+      width: 100%;
       min-height: 100vh;
       min-height: 100svh;
       display: flex;
@@ -61,7 +60,7 @@
         #050505;
     }
 
-    /* Líneas decorativas */
+    /* LÍNEAS */
 
     .line {
       position: absolute;
@@ -83,12 +82,12 @@
       left: 50%;
     }
 
-    /* Círculos */
+    /* CÍRCULO */
 
     .orb {
       position: absolute;
-      width: 420px;
-      height: 420px;
+      width: min(420px, 80vw);
+      height: min(420px, 80vw);
       border: 1px solid rgba(255,255,255,0.08);
       border-radius: 50%;
       animation: pulse 5s ease-in-out infinite;
@@ -97,14 +96,13 @@
     .orb::before {
       content: "";
       position: absolute;
-      inset: 35px;
+      inset: 8%;
       border: 1px solid rgba(255,255,255,0.045);
       border-radius: 50%;
     }
 
     @keyframes pulse {
-      0%,
-      100% {
+      0%, 100% {
         transform: scale(0.96);
         opacity: 0.55;
       }
@@ -115,49 +113,59 @@
       }
     }
 
-    /* ===== CONTENIDO ===== */
+    /* CONTENIDO */
 
     .content {
       position: relative;
       z-index: 2;
-      width: min(900px, 90%);
+      width: 100%;
+      max-width: 1100px;
+      padding: 40px 24px 90px;
       text-align: center;
-      padding: 40px 20px;
+
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
     }
 
     .brand {
       font-family: "Unbounded", sans-serif;
-      font-size: clamp(24px, 4vw, 42px);
+      font-size: clamp(22px, 4vw, 42px);
       font-weight: 900;
       letter-spacing: 0.08em;
-      margin-bottom: 70px;
+      margin-bottom: clamp(45px, 8vh, 75px);
       animation: fadeDown 1s ease forwards;
     }
 
     .status {
-      display: inline-flex;
+      display: flex;
       align-items: center;
+      justify-content: center;
       gap: 10px;
-      margin-bottom: 30px;
-      font-size: 11px;
+
+      margin-bottom: 25px;
+
+      font-size: clamp(9px, 1.2vw, 11px);
       font-weight: 500;
-      letter-spacing: 0.25em;
+      letter-spacing: 0.22em;
       text-transform: uppercase;
       color: rgba(255,255,255,0.55);
+
       animation: fadeUp 1s 0.2s ease both;
     }
 
     .status-dot {
+      flex: 0 0 auto;
       width: 7px;
       height: 7px;
       border-radius: 50%;
-      background: #ffffff;
+      background: #fff;
       animation: blink 1.8s ease-in-out infinite;
     }
 
     @keyframes blink {
-      0%,
-      100% {
+      0%, 100% {
         opacity: 0.25;
       }
 
@@ -166,50 +174,70 @@
       }
     }
 
+    /* TÍTULO */
+
     .title {
+      width: 100%;
       font-family: "Unbounded", sans-serif;
-      font-size: clamp(44px, 9vw, 110px);
-      line-height: 0.95;
+      font-size: clamp(34px, 8vw, 110px);
+      line-height: 1.05;
       font-weight: 900;
-      letter-spacing: -0.06em;
+      letter-spacing: -0.055em;
       text-transform: uppercase;
+      text-align: center;
+      overflow-wrap: anywhere;
+
       animation: fadeUp 1s 0.35s ease both;
     }
 
     .title span {
       display: block;
+      width: 100%;
     }
 
     .title .outline {
       color: transparent;
-      -webkit-text-stroke: 1px rgba(255,255,255,0.8);
-      margin-top: 10px;
+      -webkit-text-stroke: clamp(0.7px, 0.12vw, 1.2px) rgba(255,255,255,0.8);
+      margin-top: 12px;
     }
 
+    /* SUBTÍTULO */
+
     .subtitle {
+      width: 100%;
       max-width: 520px;
-      margin: 40px auto 0;
+      margin: 35px auto 0;
+
       color: rgba(255,255,255,0.5);
-      font-size: 13px;
+      font-size: clamp(11px, 1.5vw, 13px);
       line-height: 1.8;
       letter-spacing: 0.04em;
+      text-align: center;
+
       animation: fadeUp 1s 0.5s ease both;
     }
 
+    /* FOOTER */
+
     .footer {
       position: absolute;
-      bottom: 30px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 2;
-      font-size: 10px;
+      bottom: 25px;
+      left: 0;
+      width: 100%;
+
+      text-align: center;
+
+      padding: 0 20px;
+
+      font-size: 9px;
       letter-spacing: 0.18em;
       text-transform: uppercase;
       color: rgba(255,255,255,0.25);
-      white-space: nowrap;
+
+      animation: fadeUp 1s 0.7s ease both;
     }
 
-    /* ===== ANIMACIONES ===== */
+    /* ANIMACIONES */
 
     @keyframes fadeUp {
       from {
@@ -235,35 +263,118 @@
       }
     }
 
-    /* ===== MÓVIL ===== */
+    /* MÓVIL */
 
     @media (max-width: 600px) {
+
+      .content {
+        padding: 30px 18px 80px;
+      }
+
+      .brand {
+        margin-bottom: 45px;
+      }
+
+      .status {
+        margin-bottom: 22px;
+        letter-spacing: 0.16em;
+      }
+
+      .title {
+        /*
+          Evita que PRÓXIMAMENTE se salga
+          de la pantalla en teléfonos pequeños.
+        */
+        font-size: clamp(28px, 9vw, 52px);
+        letter-spacing: -0.045em;
+        line-height: 1.08;
+      }
+
+      .title .outline {
+        margin-top: 8px;
+      }
+
+      .subtitle {
+        max-width: 330px;
+        margin-top: 28px;
+        font-size: 11px;
+        line-height: 1.7;
+      }
 
       .orb {
         width: 280px;
         height: 280px;
       }
 
-      .orb::before {
-        inset: 25px;
+      .footer {
+        bottom: 18px;
+        font-size: 7px;
+        letter-spacing: 0.14em;
+      }
+    }
+
+    /* TELÉFONOS MUY PEQUEÑOS */
+
+    @media (max-width: 380px) {
+
+      .content {
+        padding-left: 14px;
+        padding-right: 14px;
       }
 
       .brand {
-        margin-bottom: 55px;
+        font-size: 20px;
+        margin-bottom: 38px;
+      }
+
+      .status {
+        font-size: 8px;
+      }
+
+      .title {
+        font-size: 25px;
       }
 
       .subtitle {
-        font-size: 12px;
-        padding: 0 10px;
+        font-size: 10px;
+        max-width: 290px;
+      }
+
+      .orb {
+        width: 230px;
+        height: 230px;
       }
 
       .footer {
-        font-size: 8px;
-        bottom: 20px;
+        font-size: 6px;
       }
-
     }
 
+    /* PANTALLAS BAJAS */
+
+    @media (max-height: 650px) {
+
+      .content {
+        padding-top: 20px;
+        padding-bottom: 65px;
+      }
+
+      .brand {
+        margin-bottom: 25px;
+      }
+
+      .status {
+        margin-bottom: 15px;
+      }
+
+      .subtitle {
+        margin-top: 20px;
+      }
+
+      .footer {
+        bottom: 12px;
+      }
+    }
   </style>
 </head>
 
@@ -307,3 +418,4 @@
 
 </body>
 </html>
+```
