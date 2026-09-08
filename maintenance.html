@@ -22,6 +22,7 @@
   >
 
   <style>
+
     * {
       margin: 0;
       padding: 0;
@@ -31,21 +32,26 @@
     html,
     body {
       width: 100%;
-      min-height: 100%;
+      height: 100%;
     }
 
     body {
       background: #050505;
-      color: #fff;
+      color: #ffffff;
       font-family: "Inter", sans-serif;
       overflow: hidden;
     }
 
+    /* =========================
+       PÁGINA
+    ========================= */
+
     .page {
       position: relative;
+
       width: 100%;
-      min-height: 100vh;
-      min-height: 100svh;
+      height: 100vh;
+      height: 100svh;
 
       display: flex;
       align-items: center;
@@ -55,24 +61,28 @@
 
       background:
         radial-gradient(
-          circle at 50% 45%,
-          rgba(255, 255, 255, 0.055),
-          transparent 35%
+          circle at center,
+          rgba(255,255,255,0.055),
+          transparent 38%
         ),
         #050505;
     }
 
-    /* Líneas decorativas */
+    /* =========================
+       LÍNEAS
+    ========================= */
 
     .line {
       position: absolute;
-      background: rgba(255, 255, 255, 0.08);
       pointer-events: none;
+
+      background: rgba(255,255,255,0.08);
     }
 
     .line-horizontal {
       width: 100%;
       height: 1px;
+
       top: 50%;
       left: 0;
     }
@@ -80,11 +90,14 @@
     .line-vertical {
       width: 1px;
       height: 100%;
+
       top: 0;
       left: 50%;
     }
 
-    /* Círculo */
+    /* =========================
+       CÍRCULO
+    ========================= */
 
     .orb {
       position: absolute;
@@ -92,7 +105,7 @@
       width: min(420px, 80vw);
       height: min(420px, 80vw);
 
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255,255,255,0.08);
       border-radius: 50%;
 
       animation: pulse 5s ease-in-out infinite;
@@ -102,13 +115,15 @@
       content: "";
 
       position: absolute;
+
       inset: 8%;
 
-      border: 1px solid rgba(255, 255, 255, 0.045);
+      border: 1px solid rgba(255,255,255,0.045);
       border-radius: 50%;
     }
 
     @keyframes pulse {
+
       0%,
       100% {
         transform: scale(0.96);
@@ -119,46 +134,55 @@
         transform: scale(1.04);
         opacity: 1;
       }
+
     }
 
-    /* Contenido */
+    /* =========================
+       CONTENIDO
+    ========================= */
 
     .content {
       position: relative;
       z-index: 2;
 
       width: 100%;
-      max-width: 1100px;
-
-      padding: 40px 24px 90px;
 
       display: flex;
       flex-direction: column;
+
       align-items: center;
       justify-content: center;
 
       text-align: center;
+
+      padding: 40px 20px 90px;
     }
 
-    /* Logo */
+    /* =========================
+       SORYNX
+    ========================= */
 
     .brand {
       font-family: "Unbounded", sans-serif;
 
       font-size: clamp(22px, 4vw, 42px);
+
       font-weight: 900;
 
       letter-spacing: 0.08em;
 
-      margin-bottom: clamp(45px, 8vh, 75px);
+      margin-bottom: 60px;
 
       animation: fadeDown 1s ease forwards;
     }
 
-    /* Estado */
+    /* =========================
+       ESTADO
+    ========================= */
 
     .status {
       display: flex;
+
       align-items: center;
       justify-content: center;
 
@@ -166,31 +190,34 @@
 
       margin-bottom: 25px;
 
-      font-size: clamp(9px, 1.2vw, 11px);
+      font-size: 10px;
+
       font-weight: 500;
 
       letter-spacing: 0.22em;
+
       text-transform: uppercase;
 
-      color: rgba(255, 255, 255, 0.55);
+      color: rgba(255,255,255,0.55);
 
       animation: fadeUp 1s 0.2s ease both;
     }
 
     .status-dot {
-      flex: 0 0 auto;
-
       width: 7px;
       height: 7px;
 
+      flex-shrink: 0;
+
       border-radius: 50%;
 
-      background: #fff;
+      background: #ffffff;
 
       animation: blink 1.8s ease-in-out infinite;
     }
 
     @keyframes blink {
+
       0%,
       100% {
         opacity: 0.25;
@@ -199,34 +226,39 @@
       50% {
         opacity: 1;
       }
+
     }
 
-    /* Título */
+    /* =========================
+       TÍTULO
+    ========================= */
 
     .title {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
       width: 100%;
-      max-width: 100%;
 
       font-family: "Unbounded", sans-serif;
 
-      /*
-        El tamaño se adapta automáticamente
-        para que PRÓXIMAMENTE quepa entero.
-      */
-      font-size: clamp(18px, 7vw, 100px);
-
-      line-height: 1.05;
       font-weight: 900;
 
-      letter-spacing: -0.06em;
-
       text-transform: uppercase;
+
       text-align: center;
 
       /*
-        IMPORTANTE:
-        evita que la E salte a otra línea.
+        CLAVE:
+        el tamaño se adapta al ancho
+        de la pantalla.
       */
+      font-size: min(8vw, 100px);
+
+      line-height: 1;
+
+      letter-spacing: -0.07em;
+
       white-space: nowrap;
 
       animation: fadeUp 1s 0.35s ease both;
@@ -234,31 +266,34 @@
 
     .title span {
       display: block;
-      width: 100%;
+
+      width: max-content;
+      max-width: 100%;
+
       white-space: nowrap;
     }
 
     .title .outline {
+      margin-top: 14px;
+
       color: transparent;
 
-      -webkit-text-stroke:
-        clamp(0.7px, 0.12vw, 1.2px)
-        rgba(255, 255, 255, 0.8);
-
-      margin-top: 12px;
+      -webkit-text-stroke: 1px rgba(255,255,255,0.8);
     }
 
-    /* Subtítulo */
+    /* =========================
+       SUBTÍTULO
+    ========================= */
 
     .subtitle {
       width: 100%;
       max-width: 520px;
 
-      margin: 35px auto 0;
+      margin-top: 35px;
 
-      color: rgba(255, 255, 255, 0.5);
+      color: rgba(255,255,255,0.5);
 
-      font-size: clamp(11px, 1.5vw, 13px);
+      font-size: 12px;
 
       line-height: 1.8;
 
@@ -269,13 +304,15 @@
       animation: fadeUp 1s 0.5s ease both;
     }
 
-    /* Footer */
+    /* =========================
+       FOOTER
+    ========================= */
 
     .footer {
       position: absolute;
 
-      bottom: 25px;
       left: 0;
+      bottom: 25px;
 
       width: 100%;
 
@@ -289,14 +326,17 @@
 
       text-transform: uppercase;
 
-      color: rgba(255, 255, 255, 0.25);
+      color: rgba(255,255,255,0.25);
 
       animation: fadeUp 1s 0.7s ease both;
     }
 
-    /* Animaciones */
+    /* =========================
+       ANIMACIONES
+    ========================= */
 
     @keyframes fadeUp {
+
       from {
         opacity: 0;
         transform: translateY(25px);
@@ -306,9 +346,11 @@
         opacity: 1;
         transform: translateY(0);
       }
+
     }
 
     @keyframes fadeDown {
+
       from {
         opacity: 0;
         transform: translateY(-20px);
@@ -318,37 +360,40 @@
         opacity: 1;
         transform: translateY(0);
       }
+
     }
 
-    /* MÓVIL */
+    /* =========================
+       MÓVIL
+    ========================= */
 
     @media (max-width: 600px) {
 
       .content {
-        padding: 30px 12px 80px;
+        padding: 30px 8px 80px;
       }
 
       .brand {
+        font-size: 22px;
         margin-bottom: 45px;
       }
 
       .status {
-        margin-bottom: 22px;
+        font-size: 8px;
         letter-spacing: 0.16em;
+        margin-bottom: 22px;
       }
 
+      /*
+        PRÓXIMAMENTE ocupa prácticamente
+        todo el ancho disponible.
+      */
       .title {
-        /*
-          Más pequeño en móvil para garantizar
-          que PRÓXIMAMENTE quepa entero.
-        */
-        font-size: clamp(16px, 8vw, 52px);
+        font-size: 7.2vw;
 
-        letter-spacing: -0.065em;
+        letter-spacing: -0.075em;
 
-        line-height: 1.08;
-
-        white-space: nowrap;
+        line-height: 1;
       }
 
       .title span {
@@ -356,7 +401,7 @@
       }
 
       .title .outline {
-        margin-top: 8px;
+        margin-top: 9px;
       }
 
       .subtitle {
@@ -364,7 +409,7 @@
 
         margin-top: 28px;
 
-        font-size: 11px;
+        font-size: 10px;
 
         line-height: 1.7;
       }
@@ -381,15 +426,18 @@
 
         letter-spacing: 0.14em;
       }
+
     }
 
-    /* MÓVILES MUY PEQUEÑOS */
+    /* =========================
+       MÓVILES PEQUEÑOS
+    ========================= */
 
     @media (max-width: 380px) {
 
       .content {
-        padding-left: 10px;
-        padding-right: 10px;
+        padding-left: 5px;
+        padding-right: 5px;
       }
 
       .brand {
@@ -398,22 +446,17 @@
       }
 
       .status {
-        font-size: 8px;
+        font-size: 7px;
       }
 
       .title {
-        /*
-          Tamaño reducido para pantallas
-          especialmente estrechas.
-        */
-        font-size: 16px;
-
-        letter-spacing: -0.06em;
+        font-size: 6.8vw;
+        letter-spacing: -0.075em;
       }
 
       .subtitle {
-        font-size: 10px;
         max-width: 290px;
+        font-size: 9px;
       }
 
       .orb {
@@ -424,9 +467,12 @@
       .footer {
         font-size: 6px;
       }
+
     }
 
-    /* Pantallas con poca altura */
+    /* =========================
+       PANTALLAS BAJAS
+    ========================= */
 
     @media (max-height: 650px) {
 
@@ -450,7 +496,9 @@
       .footer {
         bottom: 12px;
       }
+
     }
+
   </style>
 </head>
 
