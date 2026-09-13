@@ -1,10 +1,6 @@
 module.exports = async (req, res) => {
-  const token = process.env.PRINTIFY_API_TOKEN;
-
   return res.status(200).json({
-    success: true,
-    tokenExists: !!token,
-    tokenLength: token ? token.length : 0,
-    nodeEnv: process.env.NODE_ENV
+    prueba: process.env.PRUEBA_SORYNX || "NO EXISTE",
+    printify: !!process.env.PRINTIFY_API_TOKEN
   });
 };
