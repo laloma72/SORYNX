@@ -4,7 +4,17 @@
   /* ============ ESTADO ============ */
   const state = {
     size: null,
+    product: new URLSearchParams(window.location.search).get("product") || "black-blade",
   };
+
+  const PRODUCT_NAMES = {
+    "black-blade": "SORYNX BLACK BLADE TEE",
+    "dark-angel-white": "SORYNX DARK ANGEL WHITE TEE",
+    "black-dragon": "SORYNX BLACK DRAGON TEE",
+  };
+  state.productName = PRODUCT_NAMES[state.product] || PRODUCT_NAMES["black-blade"];
+  const confirmProduct = document.querySelector(".confirm-row dd");
+  if (confirmProduct) confirmProduct.textContent = state.productName;
 
   /* ============ SELECCIÓN DE TALLA ============ */
   const sizeButtons = document.querySelectorAll(".size-btn");
@@ -163,7 +173,7 @@
     submitBtn.classList.add("is-loading");
 
     const payload = {
-      product: "SORYNX DARK ANGEL TEE",
+      product: state.productName,
       price: "0,00 €",
       size: state.size,
       quantity: 1,
