@@ -162,10 +162,9 @@
     return `SRYNX-${stamp}-${rand}`;
   }
 
-  /* ============ ENVÍO ============ */
+  /* ============ STRIPE CHECKOUT ============ */
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
-
     if (!validateForm()) return;
 
     setProgress(3);
@@ -173,8 +172,8 @@
     submitBtn.classList.add("is-loading");
 
     const payload = {
-      product: state.productName,
-      price: "0,00 €",
+      product: state.product,
+      productName: state.productName,
       size: state.size,
       quantity: 1,
       fullName: document.getElementById("fullName").value.trim(),
@@ -182,44 +181,27 @@
       address: document.getElementById("address").value.trim(),
       city: document.getElementById("city").value.trim(),
       postalCode: document.getElementById("postalCode").value.trim(),
-      country: document.getElementById("country").value.trim(),
-      // El código de prueba se usa solo para simular la validación de pago
-      // en el cliente. Nunca se incluye en el payload enviado al servidor.
+      country: document.getElementById("country").value.trim()
     };
 
-    let result = null;
-
     try {
-      const response = await fetch("/api/order", {
+      const response = await fetch("/api/create-checkout-session", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
+        headers: {"Content-Type":"application/json"},
+        body: JSON.stringify(payload)
       });
-
-      if (!response.ok) {
-        const errBody = await response.json().catch(() => ({}));
-        throw new Error(errBody.message || "No se pudo registrar el pedido de prueba.");
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok || !data.url) {
+        throw new Error(data.message || "No se pudo iniciar Stripe Checkout.");
       }
-
-      result = await response.json();
+      window.location.href = data.url;
     } catch (err) {
-      // Si el backend no está desplegado todavía (por ejemplo, probando
-      // solo el front-end en local), seguimos mostrando la confirmación
-      // de prueba con un ID generado en el cliente, y avisamos en consola.
-      console.warn("No se pudo contactar con /api/order:", err.message);
-      result = { orderId: generateOrderId(), emailSent: false };
+      submitBtn.disabled = false;
+      submitBtn.classList.remove("is-loading");
+      generalError.hidden = false;
+      generalError.textContent = err.message;
+      setProgress(2);
     }
-
-    // Pequeña pausa para que la animación de carga se perciba
-    await new Promise((resolve) => setTimeout(resolve, 500));
-
-    submitBtn.classList.remove("is-loading");
-    document.getElementById("confirmSize").textContent = state.size;
-    document.getElementById("confirmOrderId").textContent = result.orderId || generateOrderId();
-
-    orderPanel.classList.add("is-hidden");
-    confirmPanel.classList.remove("is-hidden");
-    confirmPanel.scrollIntoView({ behavior: "smooth", block: "start" });
   });
 
   /* ============ REINICIAR ============ */
