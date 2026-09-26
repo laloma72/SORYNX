@@ -86,6 +86,24 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  /* Recortar solo el primer panel de los collages, sin alterar tamaño/encuadre del producto */
+  document.querySelectorAll('.product-media img[data-collage="true"]').forEach((img) => {
+    const cropFirstPanel = () => {
+      const source = new Image();
+      source.onload = () => {
+        const canvas = document.createElement('canvas');
+        canvas.width = Math.floor(source.naturalWidth / 3);
+        canvas.height = Math.floor(source.naturalHeight / 3);
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(source, 0, 0, canvas.width, canvas.height, 0, 0, canvas.width, canvas.height);
+        img.src = canvas.toDataURL('image/jpeg', 0.94);
+      };
+      source.src = img.currentSrc || img.src;
+    };
+    if (img.complete) cropFirstPanel();
+    else img.addEventListener('load', cropFirstPanel, { once: true });
+  });
+
   const cartBtn=document.getElementById('cartBtn');
   cartBtn.addEventListener('click',()=>{
     console.info('SORYNX: el carrito estará disponible con el lanzamiento de la colección.');
