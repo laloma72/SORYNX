@@ -2,11 +2,12 @@
   "name": "sorynx-test-checkout",
   "version": "1.0.0",
   "private": true,
-  "description": "Simulación de compra de prueba para SORYNX (sin pasarela de pago real).",
+  "description": "SORYNX — Stripe Checkout + webhook",
   "scripts": {
     "dev": "vercel dev"
   },
   "dependencies": {
-    "nodemailer": "^6.9.14"
+    "nodemailer": "^6.9.14",
+    "stripe": "^18.5.0"
   }
 }
