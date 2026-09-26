@@ -46,7 +46,6 @@ module.exports = async (req, res) => {
         },
         quantity:1
       }],
-      discounts:[{coupon:"SORYNX_TEST_100_OFF"}],
       metadata:{
         order_id:orderId,
         product:productName,
