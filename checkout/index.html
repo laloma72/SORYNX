@@ -1126,7 +1126,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const source=new Image(); source.src=url; await source.decode();
     const out=[];
     for(let i=0;i<9;i++){
-      const c=i%3,r=Math.floor(i/3),cellW=source.naturalWidth/3,cellH=source.naturalHeight/3,insetX=Math.round(cellW*(i>=6?0.16:0.07)),insetY=Math.round(cellH*(i>=6?0.12:0.07)),sx=Math.floor(c*cellW)+insetX,sy=Math.floor(r*cellH)+insetY,ex=Math.floor((c+1)*cellW)-insetX,ey=Math.floor((r+1)*cellH)-insetY;
+      const c=i%3,r=Math.floor(i/3),cellW=source.naturalWidth/3,cellH=source.naturalHeight/3,isBottom=i>=6,insetX=Math.round(cellW*(isBottom?0.24:0.07)),insetY=Math.round(cellH*(isBottom?0.18:0.07)),sx=Math.floor(c*cellW)+insetX,sy=Math.floor(r*cellH)+insetY,ex=Math.floor((c+1)*cellW)-insetX,ey=Math.floor((r+1)*cellH)-insetY;
       const canvas=document.createElement("canvas"); canvas.width=ex-sx; canvas.height=ey-sy;
       canvas.getContext("2d").drawImage(source,sx,sy,canvas.width,canvas.height,0,0,canvas.width,canvas.height);
       out.push(canvas.toDataURL("image/jpeg",0.92));
