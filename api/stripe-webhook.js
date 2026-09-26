@@ -1,3 +1,8 @@
+module.exports = {
+  api: {
+    bodyParser: false
+  }
+};
 const Stripe = require("stripe");
 const nodemailer = require("nodemailer");
 const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
@@ -32,7 +37,7 @@ async function sendOrderEmail(session) {
   if (!SMTP_HOST || !SMTP_USER || !SMTP_PASS || !ADMIN_EMAIL) throw new Error("Faltan variables SMTP.");
   const m=session.metadata || {};
   const amount=((session.amount_total || 0)/100).toFixed(2)+" €";
-  const shipping=session.customer_details?.address || {};
+  const shipping=session.shipping_details?.address || session.customer_details?.address || {};
   const text=`📦 NUEVO PEDIDO PAGADO — SORYNX
 
 Pedido: ${m.order_id || session.id}
@@ -45,14 +50,14 @@ ${m.product || "SORYNX"}
 Talla: ${m.size || "-"}
 
 CLIENTE
-Nombre: ${m.full_name || session.customer_details?.name || "-"}
+Nombre: ${session.shipping_details?.name || session.customer_details?.name || "-"}
 Email: ${session.customer_details?.email || session.customer_email || "-"}
 
 ENVÍO
-Dirección: ${m.address || shipping.line1 || ""}
-Ciudad: ${m.city || shipping.city || ""}
-Código postal: ${m.postal_code || shipping.postal_code || ""}
-País: ${m.country || shipping.country || ""}
+Dirección: ${shipping.line1 || ""}
+Ciudad: ${shipping.city || ""}
+Código postal: ${shipping.postal_code || ""}
+País: ${shipping.country || ""}
 
 Stripe Checkout Session: ${session.id}
 `;
