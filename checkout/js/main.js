@@ -35,30 +35,13 @@
     });
   });
 
-  /* ============ CAMBIO DE VISTA DE IMAGEN ============ */
-  const mediaBtns = document.querySelectorAll(".media-switch-btn");
-  const imgFront = document.getElementById("productImgFront");
-  const imgBack = document.getElementById("productImgBack");
-
-  mediaBtns.forEach((btn) => {
-    btn.addEventListener("click", () => {
-      mediaBtns.forEach((b) => {
-        b.classList.remove("is-active");
-        b.setAttribute("aria-selected", "false");
-      });
-      btn.classList.add("is-active");
-      btn.setAttribute("aria-selected", "true");
-
-      const view = btn.dataset.view;
-      imgFront.classList.toggle("is-hidden", view !== "front");
-      imgBack.classList.toggle("is-hidden", view !== "back");
-    });
-  });
-
-  /* ============ CONTINUAR AL FORMULARIO ============ */
+  /* ============ CONTINUAR DIRECTAMENTE A STRIPE ============ */
   const orderPanel = document.getElementById("orderPanel");
   const progressNav = document.getElementById("progressNav");
   const progressSteps = progressNav.querySelectorAll(".progress-step");
+  const submitBtn = document.getElementById("submitBtn");
+  const generalError = document.getElementById("formGeneralError");
+  const confirmPanel = document.getElementById("confirmPanel");
 
   function setProgress(stepNumber) {
     progressSteps.forEach((step) => {
@@ -68,127 +51,24 @@
     });
   }
 
-  continueBtn.addEventListener("click", () => {
+  continueBtn.addEventListener("click", async () => {
     if (!state.size) {
       sizeError.hidden = false;
       return;
     }
-    orderPanel.classList.remove("is-hidden");
-    setProgress(2);
-    orderPanel.scrollIntoView({ behavior: "smooth", block: "start" });
-    document.getElementById("fullName").focus();
-  });
 
-  /* ============ VALIDACIÓN DEL FORMULARIO ============ */
-  const form = document.getElementById("orderForm");
-  const submitBtn = document.getElementById("submitBtn");
-  const generalError = document.getElementById("formGeneralError");
-  const confirmPanel = document.getElementById("confirmPanel");
-
-  const requiredFields = [
-    { id: "fullName", message: "Introduce tu nombre completo." },
-    { id: "email", message: "Introduce un email válido." },
-    { id: "address", message: "Introduce tu dirección." },
-    { id: "city", message: "Introduce tu ciudad." },
-    { id: "postalCode", message: "Introduce tu código postal." },
-    { id: "country", message: "Introduce tu país." },
-  ];
-
-  function isValidEmail(value) {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
-  }
-
-  function clearFieldErrors() {
-    document.querySelectorAll(".field-error[data-error-for]").forEach((el) => {
-      el.hidden = true;
-      el.textContent = "";
-    });
-    document.querySelectorAll(".form-field input").forEach((input) => {
-      input.classList.remove("has-error");
-    });
-    generalError.hidden = true;
-  }
-
-  function showFieldError(id, message) {
-    const input = document.getElementById(id);
-    const errorEl = document.querySelector(`[data-error-for="${id}"]`);
-    input.classList.add("has-error");
-    if (errorEl) {
-      errorEl.textContent = message;
-      errorEl.hidden = false;
-    }
-  }
-
-  function validateForm() {
-    clearFieldErrors();
-    let firstInvalid = null;
-    let valid = true;
-
-    if (!state.size) {
-      valid = false;
-    }
-
-    requiredFields.forEach(({ id, message }) => {
-      const input = document.getElementById(id);
-      const value = input.value.trim();
-      let fieldValid = value.length > 0;
-
-      if (fieldValid && id === "email") {
-        fieldValid = isValidEmail(value);
-      }
-
-      if (!fieldValid) {
-        valid = false;
-        showFieldError(id, message);
-        if (!firstInvalid) firstInvalid = input;
-      }
-    });
-
-    if (!valid) {
-      generalError.hidden = false;
-      generalError.textContent = !state.size
-        ? "Falta seleccionar una talla. Vuelve arriba y elige S, M, L o XL."
-        : "Completa todos los campos obligatorios marcados para continuar.";
-      if (firstInvalid) firstInvalid.focus();
-    }
-
-    return valid;
-  }
-
-  /* ============ GENERAR ID DE PEDIDO (fallback local) ============ */
-  function generateOrderId() {
-    const stamp = Date.now().toString(36).toUpperCase();
-    const rand = Math.random().toString(36).slice(2, 6).toUpperCase();
-    return `SRYNX-${stamp}-${rand}`;
-  }
-
-  /* ============ STRIPE CHECKOUT ============ */
-  form.addEventListener("submit", async (event) => {
-    event.preventDefault();
-    if (!validateForm()) return;
-
+    continueBtn.disabled = true;
+    continueBtn.classList.add("is-loading");
     setProgress(3);
-    submitBtn.disabled = true;
-    submitBtn.classList.add("is-loading");
-
-    const payload = {
-      product: state.product,
-      productName: state.productName,
-      size: state.size,
-      quantity: 1,
-      fullName: document.getElementById("fullName").value.trim(),
-      email: document.getElementById("email").value.trim(),
-      address: document.getElementById("address").value.trim(),
-      city: document.getElementById("city").value.trim(),
-      postalCode: document.getElementById("postalCode").value.trim(),
-      country: document.getElementById("country").value.trim()
-    };
 
     try {
       const response = await fetch("/api/create-checkout-session", {
         method: "POST",
         headers: {"Content-Type":"application/json"},
-        body: JSON.stringify(payload)
+        body: JSON.stringify({
+          product: state.product,
+          size: state.size
+        })
       });
       const data = await response.json().catch(() => ({}));
       if (!response.ok || !data.url) {
@@ -196,28 +76,26 @@
       }
       window.location.href = data.url;
     } catch (err) {
-      submitBtn.disabled = false;
-      submitBtn.classList.remove("is-loading");
+      continueBtn.disabled = false;
+      continueBtn.classList.remove("is-loading");
       generalError.hidden = false;
       generalError.textContent = err.message;
-      setProgress(2);
+      orderPanel.classList.remove("is-hidden");
+      setProgress(1);
     }
   });
 
   /* ============ REINICIAR ============ */
-  document.getElementById("restartBtn").addEventListener("click", () => {
-    form.reset();
-    clearFieldErrors();
+  document.getElementById("restartBtn")?.addEventListener("click", () => {
     state.size = null;
     sizeButtons.forEach((b) => {
       b.classList.remove("is-selected");
       b.setAttribute("aria-checked", "false");
     });
     continueBtn.disabled = true;
-    confirmPanel.classList.add("is-hidden");
-    orderPanel.classList.add("is-hidden");
+    continueBtn.classList.remove("is-loading");
     setProgress(1);
-    submitBtn.disabled = false;
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo({top:0,behavior:"smooth"});
   });
+
 })();
