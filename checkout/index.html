@@ -718,351 +718,27 @@
 
 
   <!-- =======================================================
-       FORMULARIO DE PEDIDO
+       REDIRECCIÓN A STRIPE
        ======================================================= -->
 
-  <section
-    class="order-panel is-hidden"
-    id="orderPanel"
-  >
-
-    <form
-      id="orderForm"
-      novalidate
-    >
-
-
-      <!-- ===================================================
-           DATOS DE ENVÍO
-           =================================================== -->
-
-      <fieldset
-        class="form-block"
-        id="shippingBlock"
-      >
-
-        <legend class="form-block-title">
-          Datos de envío
-        </legend>
-
-
-        <div class="form-grid">
-
-
-          <div class="form-field form-field--full">
-
-            <label for="fullName">
-              Nombre completo
-            </label>
-
-            <input
-              type="text"
-              id="fullName"
-              name="fullName"
-              autocomplete="name"
-              required
-            >
-
-            <p
-              class="field-error"
-              data-error-for="fullName"
-              hidden
-            ></p>
-
-          </div>
-
-
-          <div class="form-field form-field--full">
-
-            <label for="email">
-              Email
-            </label>
-
-            <input
-              type="email"
-              id="email"
-              name="email"
-              autocomplete="email"
-              required
-            >
-
-            <p
-              class="field-error"
-              data-error-for="email"
-              hidden
-            ></p>
-
-          </div>
-
-
-          <div class="form-field form-field--full">
-
-            <label for="address">
-              Dirección
-            </label>
-
-            <input
-              type="text"
-              id="address"
-              name="address"
-              autocomplete="street-address"
-              required
-            >
-
-            <p
-              class="field-error"
-              data-error-for="address"
-              hidden
-            ></p>
-
-          </div>
-
-
-          <div class="form-field">
-
-            <label for="city">
-              Ciudad
-            </label>
-
-            <input
-              type="text"
-              id="city"
-              name="city"
-              autocomplete="address-level2"
-              required
-            >
-
-            <p
-              class="field-error"
-              data-error-for="city"
-              hidden
-            ></p>
-
-          </div>
-
-
-          <div class="form-field">
-
-            <label for="postalCode">
-              Código postal
-            </label>
-
-            <input
-              type="text"
-              id="postalCode"
-              name="postalCode"
-              autocomplete="postal-code"
-              required
-            >
-
-            <p
-              class="field-error"
-              data-error-for="postalCode"
-              hidden
-            ></p>
-
-          </div>
-
-
-          <div class="form-field form-field--full">
-
-            <label for="country">
-              País
-            </label>
-
-            <input
-              type="text"
-              id="country"
-              name="country"
-              autocomplete="country-name"
-              required
-            >
-
-            <p
-              class="field-error"
-              data-error-for="country"
-              hidden
-            ></p>
-
-          </div>
-
-
-        </div>
-
-      </fieldset>
-
-
-      <!-- ===================================================
-           PAGO DE PRUEBA
-           =================================================== -->
-
-      <fieldset
-        class="form-block form-block--test"
-        id="paymentBlock"
-      >
-
-        <legend class="form-block-title">
-
-          <span
-            class="test-flask"
-            aria-hidden="true"
-          >
-            🧪
-          </span>
-
-          Pago
-
-        </legend>
-
-
-        <div class="form-field form-field--full">
-
-          <label for="testCode">
-            <p class="test-disclaimer">Modo de prueba de Stripe. No se realizará ningún cargo real.</p>
-      </fieldset>
-
-
-      <p
-        class="form-summary-note"
-        id="formGeneralError"
-        hidden
-      ></p>
-
-
-      <button
-        type="submit"
-        class="btn-submit"
-        id="submitBtn"
-      >
-
-        <span class="btn-submit-text">
-          Continuar con Stripe
-        </span>
-
-        <span
-          class="btn-spinner"
-          aria-hidden="true"
-        ></span>
-
+  <section class="order-panel is-hidden" id="orderPanel">
+    <div class="form-block">
+      <p class="form-block-title">Checkout seguro</p>
+      <p class="test-disclaimer">
+        Al continuar, serás llevado directamente a Stripe para introducir tu email y tus datos de envío.
+      </p>
+      <p class="test-disclaimer">
+        Modo de prueba activo: no se realizará ningún cargo real.
+      </p>
+      <p class="form-summary-note" id="formGeneralError" hidden></p>
+      <button type="button" class="btn-submit" id="submitBtn">
+        <span class="btn-submit-text">Continuar con Stripe</span>
+        <span class="btn-spinner" aria-hidden="true"></span>
       </button>
-
-
-    </form>
-
-  </section>
-
-
-  <!-- =======================================================
-       CONFIRMACIÓN
-       ======================================================= -->
-
-  <section
-    class="confirm-panel is-hidden"
-    id="confirmPanel"
-    aria-live="polite"
-  >
-
-    <div class="confirm-mark">
-      🎉
     </div>
-
-
-    <h2 class="confirm-title">
-      ¡PEDIDO DE PRUEBA REALIZADO!
-    </h2>
-
-
-    <p class="confirm-sub">
-      Tu pedido de prueba de SORYNX ha sido registrado correctamente.
-    </p>
-
-
-    <dl class="confirm-details">
-
-
-      <div class="confirm-row">
-
-        <dt>
-          Producto
-        </dt>
-
-        <dd>
-          SORYNX BLADE TEE
-        </dd>
-
-      </div>
-
-
-      <div class="confirm-row">
-
-        <dt>
-          Talla
-        </dt>
-
-        <dd id="confirmSize">
-          —
-        </dd>
-
-      </div>
-
-
-      <div class="confirm-row">
-
-        <dt>
-          Precio
-        </dt>
-
-        <dd>
-          0,00&nbsp;€
-        </dd>
-
-      </div>
-
-
-      <div class="confirm-row">
-
-        <dt>
-          Número de pedido
-        </dt>
-
-        <dd id="confirmOrderId">
-          —
-        </dd>
-
-      </div>
-
-
-      <div class="confirm-row">
-
-        <dt>
-          Estado
-        </dt>
-
-        <dd class="confirm-status">
-          PEDIDO DE PRUEBA — NO PAGADO
-        </dd>
-
-      </div>
-
-
-    </dl>
-
-
-    <p class="confirm-thanks">
-      Gracias por probar SORYNX.
-    </p>
-
-
-    <button
-      type="button"
-      class="btn-restart"
-      id="restartBtn"
-    >
-      Hacer otro pedido de prueba
-    </button>
-
   </section>
 
+  <section class="confirm-panel is-hidden" id="confirmPanel" aria-live="polite"></section>
 
 </main>
 
@@ -1074,8 +750,7 @@
 <footer class="test-footer">
 
   <p>
-    SORYNX · Entorno de simulación de compra ·
-    Sin pasarela de pago activa
+    SORYNX · Checkout seguro con Stripe
   </p>
 
 </footer>
@@ -1093,7 +768,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     "black-dragon": {name:"SORYNX BLACK DRAGON TEE", kicker:"Colección The Dragons", description:"Una pieza de SORYNX nacida de lo desconocido: una representación de dragones del más allá, diseñada para transmitir fuerza, misterio y una presencia imposible de ignorar.", specs:["100% algodón premium","Corte oversize","Diseño Black Dragon"], collage:"img/productos/WhatsApp%20Image%202026-09-26%20at%2013.13.57.jpeg"}
   };
   const p=products[key]||products["black-blade"];
-  document.title="SORYNX | Pedido de prueba — "+p.name;
+  document.title="SORYNX | Checkout — "+p.name;
   document.getElementById("product-name").textContent=p.name;
   document.querySelector(".product-kicker").textContent=p.kicker;
   document.querySelector(".product-desc").textContent=p.description;
