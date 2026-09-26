@@ -657,88 +657,6 @@
   </section>
 
 
-  <!-- =======================================================
-       PROGRESO
-       ======================================================= -->
-
-  <nav
-    class="progress"
-    id="progressNav"
-    aria-label="Progreso del pedido"
-  >
-
-    <div
-      class="progress-step is-active"
-      data-step="1"
-    >
-      <span class="progress-num">
-        01
-      </span>
-
-      <span class="progress-label">
-        Producto
-      </span>
-    </div>
-
-
-    <div class="progress-line"></div>
-
-
-    <div
-      class="progress-step"
-      data-step="2"
-    >
-      <span class="progress-num">
-        02
-      </span>
-
-      <span class="progress-label">
-        Envío
-      </span>
-    </div>
-
-
-    <div class="progress-line"></div>
-
-
-    <div
-      class="progress-step"
-      data-step="3"
-    >
-      <span class="progress-num">
-        03
-      </span>
-
-      <span class="progress-label">
-        Pago
-      </span>
-    </div>
-
-  </nav>
-
-
-  <!-- =======================================================
-       REDIRECCIÓN A STRIPE
-       ======================================================= -->
-
-  <section class="order-panel is-hidden" id="orderPanel">
-    <div class="form-block">
-      <p class="form-block-title">Checkout seguro</p>
-      <p class="test-disclaimer">
-        Al continuar, serás llevado directamente a Stripe para introducir tu email y tus datos de envío.
-      </p>
-      <p class="test-disclaimer">
-        Modo de prueba activo: no se realizará ningún cargo real.
-      </p>
-      <p class="form-summary-note" id="formGeneralError" hidden></p>
-      <button type="button" class="btn-submit" id="submitBtn">
-        <span class="btn-submit-text">Continuar con Stripe</span>
-        <span class="btn-spinner" aria-hidden="true"></span>
-      </button>
-    </div>
-  </section>
-
-  <section class="confirm-panel is-hidden" id="confirmPanel" aria-live="polite"></section>
 
 </main>
 
@@ -773,7 +691,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   document.querySelector(".product-kicker").textContent=p.kicker;
   document.querySelector(".product-desc").textContent=p.description;
   document.querySelector(".product-specs").innerHTML=p.specs.map(x=>"<li>"+x+"</li>").join("");
-  document.querySelector(".confirm-row dd").textContent=p.name;
 
   const main=document.getElementById("productImgFront"), frame=document.getElementById("galleryMain"), counter=document.getElementById("galleryCounter");
   const prev=document.getElementById("galleryPrev"), next=document.getElementById("galleryNext");
