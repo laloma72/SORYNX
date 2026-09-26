@@ -1102,335 +1102,51 @@
 <!-- =========================================================
      GALERÍA JAVASCRIPT
      ========================================================= -->
-
 <script>
+document.addEventListener("DOMContentLoaded", async () => {
+  const key = new URLSearchParams(location.search).get("product") || "black-blade";
+  const products = {
+    "black-blade": {name:"SORYNX BLACK BLADE TEE", kicker:"Colección Blade Series", description:"Camiseta streetwear exclusiva de SORYNX. Diseño inspirado en la fuerza y precisión de una espada.", specs:["100% algodón premium","Corte oversize","Serigrafía SORYNX BLADE frontal y trasera"], sources:["img/01-front.jpg","img/02-back.jpg","img/03-three-quarter.jpg","img/04-side.jpg","img/05-neck-logo-detail.jpg","img/06-back-graphic-detail.jpg","img/07-sleeve-detail.jpg","img/08-folded.jpg","img/09-bottom-graphic-detail.jpg"]},
+    "dark-angel-white": {name:"SORYNX DARK ANGEL WHITE TEE", kicker:"Colección Dark Angel", description:"Camiseta streetwear exclusiva de SORYNX de la colección Dark Angel.", specs:["100% algodón premium","Corte oversize","Diseño Dark Angel"], collage:"img/productos/WhatsApp%20Image%202026-09-26%20at%2013.13.58.jpeg"},
+    "black-dragon": {name:"SORYNX BLACK DRAGON TEE", kicker:"Colección The Dragons", description:"Camiseta streetwear exclusiva de SORYNX de la colección The Dragons.", specs:["100% algodón premium","Corte oversize","Diseño Black Dragon"], collage:"img/productos/WhatsApp%20Image%202026-09-26%20at%2013.13.57.jpeg"}
+  };
+  const p=products[key]||products["black-blade"];
+  document.title="SORYNX | Pedido de prueba — "+p.name;
+  document.getElementById("product-name").textContent=p.name;
+  document.querySelector(".product-kicker").textContent=p.kicker;
+  document.querySelector(".product-desc").textContent=p.description;
+  document.querySelector(".product-specs").innerHTML=p.specs.map(x=>"<li>"+x+"</li>").join("");
+  document.querySelector(".confirm-row dd").textContent=p.name;
 
-document.addEventListener("DOMContentLoaded", () => {
+  const main=document.getElementById("productImgFront"), frame=document.getElementById("galleryMain"), counter=document.getElementById("galleryCounter");
+  const prev=document.getElementById("galleryPrev"), next=document.getElementById("galleryNext");
+  const thumbs=[...document.querySelectorAll(".gallery-thumbnail")];
 
-  const images = [
-    {
-      src: "img/01-front.jpg",
-      alt: "SORYNX Dark Angel Tee — vista frontal"
-    },
-    {
-      src: "img/02-back.jpg",
-      alt: "SORYNX Dark Angel Tee — vista trasera"
-    },
-    {
-      src: "img/03-three-quarter.jpg",
-      alt: "SORYNX Dark Angel Tee — vista tres cuartos"
-    },
-    {
-      src: "img/04-side.jpg",
-      alt: "SORYNX Dark Angel Tee — vista lateral"
-    },
-    {
-      src: "img/05-neck-logo-detail.jpg",
-      alt: "SORYNX Dark Angel Tee — detalle del cuello y logo"
-    },
-    {
-      src: "img/06-back-graphic-detail.jpg",
-      alt: "SORYNX Dark Angel Tee — detalle gráfico trasero"
-    },
-    {
-      src: "img/07-sleeve-detail.jpg",
-      alt: "SORYNX Dark Angel Tee — detalle de manga"
-    },
-    {
-      src: "img/08-folded.jpg",
-      alt: "SORYNX Dark Angel Tee — camiseta doblada"
-    },
-    {
-      src: "img/09-bottom-graphic-detail.jpg",
-      alt: "SORYNX Dark Angel Tee — detalle inferior"
+  async function crop(url){
+    const source=new Image(); source.src=url; await source.decode();
+    const out=[];
+    for(let i=0;i<9;i++){
+      const c=i%3,r=Math.floor(i/3),sx=Math.floor(c*source.naturalWidth/3),sy=Math.floor(r*source.naturalHeight/3),ex=Math.floor((c+1)*source.naturalWidth/3),ey=Math.floor((r+1)*source.naturalHeight/3);
+      const canvas=document.createElement("canvas"); canvas.width=ex-sx; canvas.height=ey-sy;
+      canvas.getContext("2d").drawImage(source,sx,sy,canvas.width,canvas.height,0,0,canvas.width,canvas.height);
+      out.push(canvas.toDataURL("image/jpeg",0.92));
     }
-  ];
-
-
-  const mainImage =
-    document.getElementById("productImgFront");
-
-  const mainFrame =
-    document.getElementById("galleryMain");
-
-  const counter =
-    document.getElementById("galleryCounter");
-
-  const previousButton =
-    document.getElementById("galleryPrev");
-
-  const nextButton =
-    document.getElementById("galleryNext");
-
-  const thumbnails =
-    document.querySelectorAll(".gallery-thumbnail");
-
-
-  let currentIndex = 0;
-
-
-  /* =======================================================
-     CAMBIAR IMAGEN
-     ======================================================= */
-
-  function showImage(index) {
-
-    if (!mainImage) return;
-
-    currentIndex =
-      (index + images.length) % images.length;
-
-
-    mainFrame.classList.remove("is-zoomed");
-
-
-    mainImage.classList.add("gallery-changing");
-
-
-    setTimeout(() => {
-
-      mainImage.src =
-        images[currentIndex].src;
-
-      mainImage.alt =
-        images[currentIndex].alt;
-
-
-      counter.textContent =
-        `${currentIndex + 1} / ${images.length}`;
-
-
-      thumbnails.forEach((thumbnail, i) => {
-
-        const active =
-          i === currentIndex;
-
-        thumbnail.classList.toggle(
-          "is-active",
-          active
-        );
-
-        if (active) {
-
-          thumbnail.setAttribute(
-            "aria-current",
-            "true"
-          );
-
-        } else {
-
-          thumbnail.removeAttribute(
-            "aria-current"
-          );
-
-        }
-
-      });
-
-
-      mainImage.classList.remove(
-        "gallery-changing"
-      );
-
-    }, 180);
-
+    return out;
   }
-
-
-  /* =======================================================
-     FLECHA ANTERIOR
-     ======================================================= */
-
-  if (previousButton) {
-
-    previousButton.addEventListener(
-      "click",
-      () => {
-
-        showImage(currentIndex - 1);
-
-      }
-    );
-
+  const images=p.collage?await crop(p.collage):p.sources;
+  thumbs.forEach((t,i)=>{const im=t.querySelector("img"); if(im&&images[i]){im.src=images[i];im.alt=p.name+" — vista "+(i+1);}});
+  let index=0;
+  function show(i){
+    index=(i+images.length)%images.length; frame.classList.remove("is-zoomed"); main.classList.add("gallery-changing");
+    setTimeout(()=>{main.src=images[index];main.alt=p.name+" — vista "+(index+1);counter.textContent=(index+1)+" / "+images.length;thumbs.forEach((t,n)=>{t.classList.toggle("is-active",n===index);if(n===index)t.setAttribute("aria-current","true");else t.removeAttribute("aria-current");});main.classList.remove("gallery-changing");},180);
   }
-
-
-  /* =======================================================
-     FLECHA SIGUIENTE
-     ======================================================= */
-
-  if (nextButton) {
-
-    nextButton.addEventListener(
-      "click",
-      () => {
-
-        showImage(currentIndex + 1);
-
-      }
-    );
-
-  }
-
-
-  /* =======================================================
-     MINIATURAS
-     ======================================================= */
-
-  thumbnails.forEach((thumbnail) => {
-
-    thumbnail.addEventListener(
-      "click",
-      () => {
-
-        const index =
-          Number(
-            thumbnail.dataset.index
-          );
-
-        showImage(index);
-
-      }
-    );
-
-  });
-
-
-  /* =======================================================
-     ZOOM
-     ======================================================= */
-
-  if (mainFrame) {
-
-    mainFrame.addEventListener(
-      "click",
-      (event) => {
-
-        if (
-          event.target === mainImage
-        ) {
-
-          mainFrame.classList.toggle(
-            "is-zoomed"
-          );
-
-        }
-
-      }
-    );
-
-  }
-
-
-  /* =======================================================
-     TECLADO
-     ======================================================= */
-
-  document.addEventListener(
-    "keydown",
-    (event) => {
-
-      if (event.key === "ArrowLeft") {
-
-        showImage(
-          currentIndex - 1
-        );
-
-      }
-
-      if (event.key === "ArrowRight") {
-
-        showImage(
-          currentIndex + 1
-        );
-
-      }
-
-      if (event.key === "Escape") {
-
-        mainFrame.classList.remove(
-          "is-zoomed"
-        );
-
-      }
-
-    }
-  );
-
-
-  /* =======================================================
-     SWIPE EN MÓVIL
-     ======================================================= */
-
-  let touchStartX = 0;
-  let touchEndX = 0;
-
-
-  if (mainFrame) {
-
-    mainFrame.addEventListener(
-      "touchstart",
-      (event) => {
-
-        touchStartX =
-          event.changedTouches[0].screenX;
-
-      },
-      {
-        passive: true
-      }
-    );
-
-
-    mainFrame.addEventListener(
-      "touchend",
-      (event) => {
-
-        touchEndX =
-          event.changedTouches[0].screenX;
-
-
-        const difference =
-          touchStartX - touchEndX;
-
-
-        if (Math.abs(difference) < 45) {
-          return;
-        }
-
-
-        if (difference > 0) {
-
-          showImage(
-            currentIndex + 1
-          );
-
-        } else {
-
-          showImage(
-            currentIndex - 1
-          );
-
-        }
-
-      },
-      {
-        passive: true
-      }
-    );
-
-  }
-
+  prev?.addEventListener("click",()=>show(index-1)); next?.addEventListener("click",()=>show(index+1));
+  thumbs.forEach(t=>t.addEventListener("click",()=>show(Number(t.dataset.index))));
+  frame?.addEventListener("click",e=>{if(e.target===main)frame.classList.toggle("is-zoomed");});
+  document.addEventListener("keydown",e=>{if(e.key==="ArrowLeft")show(index-1);if(e.key==="ArrowRight")show(index+1);if(e.key==="Escape")frame.classList.remove("is-zoomed");});
+  let touchX=0; frame?.addEventListener("touchstart",e=>touchX=e.changedTouches[0].screenX,{passive:true}); frame?.addEventListener("touchend",e=>{const d=touchX-e.changedTouches[0].screenX;if(Math.abs(d)>=45)show(index+(d>0?1:-1));});
+  show(0);
 });
-
 </script>
-
-
-<!-- =========================================================
-     JAVASCRIPT ORIGINAL DEL CHECKOUT
-     ========================================================= -->
-
-<script src="js/main.js"></script>
-
 </body>
 </html>
