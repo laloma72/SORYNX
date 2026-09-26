@@ -1,16 +1,12 @@
 /* =========================================================
    SORYNX — main.js
-   Header on scroll, menú móvil, reveal-on-scroll, animación
-   de entrada del hero, cursor personalizado y año dinámico.
    ========================================================= */
 
 document.addEventListener('DOMContentLoaded', () => {
 
-  /* ---------- Año dinámico en el footer ---------- */
   const yearEl = document.getElementById('year');
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-  /* ---------- Header: fondo al hacer scroll ---------- */
   const header = document.getElementById('header');
   const onScrollHeader = () => {
     if (window.scrollY > 40) header.classList.add('scrolled');
@@ -19,7 +15,6 @@ document.addEventListener('DOMContentLoaded', () => {
   onScrollHeader();
   window.addEventListener('scroll', onScrollHeader, { passive: true });
 
-  /* ---------- Menú móvil ---------- */
   const menuToggle = document.getElementById('menuToggle');
   const mobileNav = document.getElementById('mobileNav');
 
@@ -39,7 +34,6 @@ document.addEventListener('DOMContentLoaded', () => {
     link.addEventListener('click', closeMobileNav);
   });
 
-  /* ---------- Scroll suave a las secciones internas ---------- */
   document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', (e) => {
       const targetId = anchor.getAttribute('href');
@@ -52,13 +46,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  /* ---------- Animación de entrada del hero (una sola vez) ---------- */
   const heroTitle = document.getElementById('heroTitle');
-  requestAnimationFrame(() => {
-    heroTitle.classList.add('animate');
-  });
+  requestAnimationFrame(() => heroTitle.classList.add('animate'));
 
-  /* ---------- Reveal on scroll ---------- */
   const revealTargets = document.querySelectorAll('[data-reveal], .reveal-up');
   const revealObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
@@ -72,19 +62,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
   revealTargets.forEach(el => revealObserver.observe(el));
 
-  /* ---------- Cursor personalizado (solo dispositivos con puntero fino) ---------- */
   const cursorDot = document.getElementById('cursorDot');
   const canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 
   if (canHover && cursorDot) {
     let x = 0, y = 0, targetX = 0, targetY = 0;
-
     window.addEventListener('mousemove', (e) => {
       targetX = e.clientX;
       targetY = e.clientY;
       cursorDot.classList.add('active');
     });
-
     const animateCursor = () => {
       x += (targetX - x) * 0.18;
       y += (targetY - y) * 0.18;
@@ -93,15 +80,13 @@ document.addEventListener('DOMContentLoaded', () => {
       requestAnimationFrame(animateCursor);
     };
     animateCursor();
-
     document.querySelectorAll('a, button').forEach(el => {
       el.addEventListener('mouseenter', () => cursorDot.classList.add('grow'));
       el.addEventListener('mouseleave', () => cursorDot.classList.remove('grow'));
     });
   }
 
-
-  /* ---------- Recortar automáticamente el primer ángulo de los collages ---------- */
+  /* ---------- Recortar el primer ángulo de los collages ---------- */
   document.querySelectorAll("img[data-collage]").forEach((img) => {
     const source = new Image();
     source.src = img.src;
@@ -113,15 +98,19 @@ document.addEventListener('DOMContentLoaded', () => {
       canvas.height = h;
       canvas.getContext("2d").drawImage(source, 0, 0, w, h, 0, 0, w, h);
       img.src = canvas.toDataURL("image/jpeg", 0.92);
+
+      /* El 0.88 anterior reducía el cuadro completo.
+         Ahora mantenemos el cuadro al 100% y ajustamos únicamente
+         la escala visual de la camiseta dentro del collage. */
+      if (img.dataset.shirtScale === "blade") {
+        img.style.transform = "scale(1)";
+        img.style.objectFit = "cover";
+      }
     };
   });
 
-  /* ---------- Placeholder: carrito ---------- */
   const cartBtn = document.getElementById('cartBtn');
   cartBtn.addEventListener('click', () => {
-    // La tienda aún no tiene productos activos.
-    // Cuando SORYNX lance su primera prenda, conecta aquí tu lógica
-    // real de carrito (o el checkout de tu plataforma de e-commerce).
     console.info('SORYNX: el carrito estará disponible con el lanzamiento de la colección.');
   });
 
