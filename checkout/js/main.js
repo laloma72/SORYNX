@@ -36,21 +36,6 @@
   });
 
   /* ============ CONTINUAR DIRECTAMENTE A STRIPE ============ */
-  const orderPanel = document.getElementById("orderPanel");
-  const progressNav = document.getElementById("progressNav");
-  const progressSteps = progressNav.querySelectorAll(".progress-step");
-  const submitBtn = document.getElementById("submitBtn");
-  const generalError = document.getElementById("formGeneralError");
-  const confirmPanel = document.getElementById("confirmPanel");
-
-  function setProgress(stepNumber) {
-    progressSteps.forEach((step) => {
-      const n = Number(step.dataset.step);
-      step.classList.toggle("is-active", n === stepNumber);
-      step.classList.toggle("is-done", n < stepNumber);
-    });
-  }
-
   continueBtn.addEventListener("click", async () => {
     if (!state.size) {
       sizeError.hidden = false;
@@ -59,8 +44,6 @@
 
     continueBtn.disabled = true;
     continueBtn.classList.add("is-loading");
-    setProgress(3);
-
     try {
       const response = await fetch("/api/create-checkout-session", {
         method: "POST",
@@ -78,10 +61,7 @@
     } catch (err) {
       continueBtn.disabled = false;
       continueBtn.classList.remove("is-loading");
-      generalError.hidden = false;
-      generalError.textContent = err.message;
-      orderPanel.classList.remove("is-hidden");
-      setProgress(1);
+      window.alert(err.message);
     }
   });
 
@@ -94,7 +74,6 @@
     });
     continueBtn.disabled = true;
     continueBtn.classList.remove("is-loading");
-    setProgress(1);
     window.scrollTo({top:0,behavior:"smooth"});
   });
 
