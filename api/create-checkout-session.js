@@ -25,9 +25,9 @@ module.exports = async (req, res) => {
   const productKey=clean(body.product,80);
   const productName=PRODUCTS[productKey];
   const size=clean(body.size,10);
+
   if (!productName || !["S","M","L","XL"].includes(size)) {
-[^\s@]+\.[^\s@]+$/.test(email)) {
-    return res.status(400).json({message:"Datos de pedido no válidos."});
+    return res.status(400).json({message:"Producto o talla no válidos."});
   }
 
   const orderId="SRYNX-"+Date.now().toString(36).toUpperCase()+"-"+Math.random().toString(36).slice(2,7).toUpperCase();
@@ -48,11 +48,15 @@ module.exports = async (req, res) => {
       }],
       discounts:[{coupon:"SORYNX_TEST_100_OFF"}],
       metadata:{
-        order_id:orderId, product:productName, product_key:productKey, size
+        order_id:orderId,
+        product:productName,
+        product_key:productKey,
+        size
       },
       success_url:origin+"/checkout/?stripe_success=1&session_id={CHECKOUT_SESSION_ID}",
       cancel_url:origin+"/checkout/?stripe_cancelled=1"
     });
+
     return res.status(200).json({url:session.url,orderId});
   } catch (err) {
     console.error("Stripe Checkout error:",err);
