@@ -1,11 +1,19 @@
+const Stripe = require("stripe");
+const nodemailer = require("nodemailer");
+
+const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
+
 module.exports = {
   api: {
     bodyParser: false
   }
 };
-const Stripe = require("stripe");
-const nodemailer = require("nodemailer");
-const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
+
+async function getRawBody(req) {
+  const chunks = [];
+  for await (const chunk of req) chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk));
+  return Buffer.concat(chunks);
+}
 
 module.exports = async (req,res) => {
   if (req.method !== "POST") {
@@ -16,7 +24,12 @@ module.exports = async (req,res) => {
 
   let event;
   try {
-    event=stripe.webhooks.constructEvent(req.body,req.headers["stripe-signature"],process.env.STRIPE_WEBHOOK_SECRET);
+    const rawBody=await getRawBody(req);
+    event=stripe.webhooks.constructEvent(
+      rawBody,
+      req.headers["stripe-signature"],
+      process.env.STRIPE_WEBHOOK_SECRET
+    );
   } catch (err) {
     console.error("Stripe webhook signature error:",err.message);
     return res.status(400).send("Invalid signature");
@@ -25,19 +38,28 @@ module.exports = async (req,res) => {
   if (event.type === "checkout.session.completed") {
     const session=event.data.object;
     if (session.payment_status === "paid") {
-      try { await sendOrderEmail(session); }
-      catch (err) { console.error("Paid order email error:",err); return res.status(500).send("Email delivery failed"); }
+      try {
+        await sendOrderEmail(session);
+      } catch (err) {
+        console.error("Paid order email error:",err);
+        return res.status(500).send("Email delivery failed");
+      }
     }
   }
+
   return res.status(200).json({received:true});
 };
 
 async function sendOrderEmail(session) {
   const {SMTP_HOST,SMTP_PORT,SMTP_USER,SMTP_PASS,ADMIN_EMAIL}=process.env;
-  if (!SMTP_HOST || !SMTP_USER || !SMTP_PASS || !ADMIN_EMAIL) throw new Error("Faltan variables SMTP.");
+  if (!SMTP_HOST || !SMTP_USER || !SMTP_PASS || !ADMIN_EMAIL) {
+    throw new Error("Faltan variables SMTP.");
+  }
+
   const m=session.metadata || {};
   const amount=((session.amount_total || 0)/100).toFixed(2)+" €";
   const shipping=session.shipping_details?.address || session.customer_details?.address || {};
+
   const text=`📦 NUEVO PEDIDO PAGADO — SORYNX
 
 Pedido: ${m.order_id || session.id}
@@ -61,13 +83,19 @@ País: ${shipping.country || ""}
 
 Stripe Checkout Session: ${session.id}
 `;
+
   const transporter=nodemailer.createTransport({
-    host:SMTP_HOST,port:Number(SMTP_PORT)||465,secure:Number(SMTP_PORT)!==587,
+    host:SMTP_HOST,
+    port:Number(SMTP_PORT)||465,
+    secure:Number(SMTP_PORT)!==587,
     auth:{user:SMTP_USER,pass:SMTP_PASS}
   });
+
   await transporter.sendMail({
     from:`"SORYNX — Pedidos" <${SMTP_USER}>`,
-    to:ADMIN_EMAIL,replyTo:session.customer_details?.email || undefined,
-    subject:`📦 Pedido pagado SORYNX — ${m.order_id || session.id}`,text
+    to:ADMIN_EMAIL,
+    replyTo:session.customer_details?.email || undefined,
+    subject:`📦 Pedido pagado SORYNX — ${m.order_id || session.id}`,
+    text
   });
 }
