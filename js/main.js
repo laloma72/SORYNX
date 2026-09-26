@@ -100,6 +100,22 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+
+  /* ---------- Recortar automáticamente el primer ángulo de los collages ---------- */
+  document.querySelectorAll("img[data-collage]").forEach((img) => {
+    const source = new Image();
+    source.src = img.src;
+    source.onload = () => {
+      const canvas = document.createElement("canvas");
+      const w = Math.floor(source.naturalWidth / 3);
+      const h = Math.floor(source.naturalHeight / 3);
+      canvas.width = w;
+      canvas.height = h;
+      canvas.getContext("2d").drawImage(source, 0, 0, w, h, 0, 0, w, h);
+      img.src = canvas.toDataURL("image/jpeg", 0.92);
+    };
+  });
+
   /* ---------- Placeholder: carrito ---------- */
   const cartBtn = document.getElementById('cartBtn');
   cartBtn.addEventListener('click', () => {
