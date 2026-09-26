@@ -25,9 +25,8 @@ module.exports = async (req, res) => {
   const productKey=clean(body.product,80);
   const productName=PRODUCTS[productKey];
   const size=clean(body.size,10);
-  const email=clean(body.email,200);
-
-  if (!productName || !["S","M","L","XL"].includes(size) || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+  if (!productName || !["S","M","L","XL"].includes(size)) {
+[^\s@]+\.[^\s@]+$/.test(email)) {
     return res.status(400).json({message:"Datos de pedido no válidos."});
   }
 
@@ -37,8 +36,8 @@ module.exports = async (req, res) => {
   try {
     const session=await stripe.checkout.sessions.create({
       mode:"payment",
-      customer_email:email,
       billing_address_collection:"auto",
+      shipping_address_collection:{allowed_countries:["ES"]},
       line_items:[{
         price_data:{
           currency:"eur",
@@ -49,9 +48,7 @@ module.exports = async (req, res) => {
       }],
       discounts:[{coupon:"SORYNX_TEST_100_OFF"}],
       metadata:{
-        order_id:orderId, product:productName, product_key:productKey, size,
-        full_name:clean(body.fullName), address:clean(body.address),
-        city:clean(body.city), postal_code:clean(body.postalCode), country:clean(body.country)
+        order_id:orderId, product:productName, product_key:productKey, size
       },
       success_url:origin+"/checkout/?stripe_success=1&session_id={CHECKOUT_SESSION_ID}",
       cancel_url:origin+"/checkout/?stripe_cancelled=1"
