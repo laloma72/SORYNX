@@ -1108,7 +1108,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const products = {
     "black-blade": {name:"SORYNX BLACK BLADE TEE", kicker:"Colección Blade Series", description:"Camiseta streetwear exclusiva de SORYNX. Diseño inspirado en la fuerza y precisión de una espada.", specs:["100% algodón premium","Corte oversize","Serigrafía SORYNX BLADE frontal y trasera"], sources:["img/01-front.jpg","img/02-back.jpg","img/03-three-quarter.jpg","img/04-side.jpg","img/05-neck-logo-detail.jpg","img/06-back-graphic-detail.jpg","img/07-sleeve-detail.jpg","img/08-folded.jpg","img/09-bottom-graphic-detail.jpg"]},
     "dark-angel-white": {name:"SORYNX DARK ANGEL WHITE TEE", kicker:"Colección Dark Angel", description:"Una pieza nacida de la oscuridad: SORYNX DARK ANGEL WHITE TEE representa el contraste entre luz y sombra, con una presencia que no pasa desapercibida.", specs:["100% algodón premium","Corte oversize","Diseño Dark Angel en contraste"], collage:"img/productos/WhatsApp%20Image%202026-09-26%20at%2013.13.58.jpeg"},
-    "black-dragon": {name:"SORYNX BLACK DRAGON TEE", kicker:"Colección The Dragons", description:"Camiseta streetwear exclusiva de SORYNX de la colección The Dragons.", specs:["100% algodón premium","Corte oversize","Diseño Black Dragon"], collage:"img/productos/WhatsApp%20Image%202026-09-26%20at%2013.13.57.jpeg"}
+    "black-dragon": {name:"SORYNX BLACK DRAGON TEE", kicker:"Colección The Dragons", description:"Una pieza de SORYNX nacida de lo desconocido: una representación de dragones del más allá, diseñada para transmitir fuerza, misterio y una presencia imposible de ignorar.", specs:["100% algodón premium","Corte oversize","Diseño Black Dragon"], collage:"img/productos/WhatsApp%20Image%202026-09-26%20at%2013.13.57.jpeg"}
   };
   const p=products[key]||products["black-blade"];
   document.title="SORYNX | Pedido de prueba — "+p.name;
@@ -1126,7 +1126,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const source=new Image(); source.src=url; await source.decode();
     const out=[];
     for(let i=0;i<9;i++){
-      const c=i%3,r=Math.floor(i/3),cellW=source.naturalWidth/3,cellH=source.naturalHeight/3,insetX=Math.round(cellW*0.07),insetY=Math.round(cellH*0.07),sx=Math.floor(c*cellW)+insetX,sy=Math.floor(r*cellH)+insetY,ex=Math.floor((c+1)*cellW)-insetX,ey=Math.floor((r+1)*cellH)-insetY;
+      const c=i%3,r=Math.floor(i/3),cellW=source.naturalWidth/3,cellH=source.naturalHeight/3,insetX=Math.round(cellW*(i>=6?0.16:0.07)),insetY=Math.round(cellH*(i>=6?0.12:0.07)),sx=Math.floor(c*cellW)+insetX,sy=Math.floor(r*cellH)+insetY,ex=Math.floor((c+1)*cellW)-insetX,ey=Math.floor((r+1)*cellH)-insetY;
       const canvas=document.createElement("canvas"); canvas.width=ex-sx; canvas.height=ey-sy;
       canvas.getContext("2d").drawImage(source,sx,sy,canvas.width,canvas.height,0,0,canvas.width,canvas.height);
       out.push(canvas.toDataURL("image/jpeg",0.92));
