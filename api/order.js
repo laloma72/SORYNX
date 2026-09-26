@@ -15,9 +15,11 @@ const REQUIRED_FIELDS = [
   "postalCode",
   "country",
   "size",
+  "product",
 ];
 
 const VALID_SIZES = ["S", "M", "L", "XL"];
+const VALID_PRODUCTS = ["SORYNX BLACK BLADE TEE", "SORYNX DARK ANGEL WHITE TEE", "SORYNX BLACK DRAGON TEE"];
 
 function isValidEmail(value) {
   return typeof value === "string" && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
@@ -55,6 +57,10 @@ function validatePayload(body) {
     errors.push("La talla seleccionada no es válida.");
   }
 
+  if (body.product && !VALID_PRODUCTS.includes(body.product)) {
+    errors.push("El producto seleccionado no es válido.");
+  }
+
   return errors;
 }
 
@@ -76,7 +82,7 @@ module.exports = async (req, res) => {
   const fecha = now.toLocaleString("es-ES", { timeZone: "Europe/Madrid" });
 
   const order = {
-    product: "SORYNX DARK ANGEL TEE",
+    product: sanitize(body.product),
     price: "0,00 €",
     size: sanitize(body.size),
     quantity: 1,
