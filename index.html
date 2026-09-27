@@ -3,16 +3,24 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SORYNX | Próximamente</title>
-  <meta name="description" content="SORYNX — En desarrollo. Muy pronto.">
+  <title>SORYNX</title>
+  <meta name="description" content="SORYNX — Define Your Presence.">
   <link rel="icon" type="image/png" href="/img/logo.png">
-  <meta http-equiv="refresh" content="0; url=/maintenance.html">
 </head>
 <body>
   <script>
-    window.location.replace("/maintenance.html");
+    // El dominio público muestra mantenimiento; los dominios de deployment
+    // de Vercel quedan disponibles para probar la web normalmente.
+    const publicHost = "sorynx.vercel.app";
+
+    if (window.location.hostname === publicHost) {
+      window.location.replace("/maintenance.html");
+    } else {
+      window.location.replace("/sorynx.html");
+    }
   </script>
-  <!-- SORYNX maintenance deployment trigger -->
-  <!-- Deployment check: 2026-09-27 -->
+  <noscript>
+    <p>Activa JavaScript para continuar.</p>
+  </noscript>
 </body>
 </html>
