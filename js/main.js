@@ -104,9 +104,76 @@ document.addEventListener('DOMContentLoaded', () => {
     else img.addEventListener('load', cropFirstPanel, { once: true });
   });
 
+  /* ================= CARRITO SORYNX ================= */
+  const CART_KEY='sorynx_cart_v1';
+  const PRODUCTS={
+    'black-blade':{name:'SORYNX BLACK BLADE TEE',price:10,image:'checkout/img/01-front.jpg'},
+    'dark-angel-white':{name:'SORYNX DARK ANGEL WHITE TEE',price:10,image:'checkout/img/productos/WhatsApp%20Image%202026-09-26%20at%2013.13.58.jpeg'},
+    'black-dragon':{name:'SORYNX BLACK DRAGON TEE',price:10,image:'checkout/img/productos/WhatsApp%20Image%202026-09-26%20at%2013.13.57.jpeg'}
+  };
+  const getCart=()=>{try{return JSON.parse(localStorage.getItem(CART_KEY)||'[]')}catch{return[]}};
+  const saveCart=(cart)=>localStorage.setItem(CART_KEY,JSON.stringify(cart));
   const cartBtn=document.getElementById('cartBtn');
-  cartBtn.addEventListener('click',()=>{
-    console.info('SORYNX: el carrito estará disponible con el lanzamiento de la colección.');
+  const drawer=document.getElementById('cartDrawer');
+  const backdrop=document.getElementById('cartBackdrop');
+  const closeBtn=document.getElementById('cartClose');
+  const itemsEl=document.getElementById('cartItems');
+  const emptyEl=document.getElementById('cartEmpty');
+  const footerEl=document.getElementById('cartFooter');
+  const totalEl=document.getElementById('cartTotal');
+  const countEl=document.querySelector('.cart-count');
+
+  const formatEUR=(n)=>n.toLocaleString('es-ES',{style:'currency',currency:'EUR'});
+  const openCart=()=>{drawer.classList.add('is-open');drawer.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';};
+  const closeCart=()=>{drawer.classList.remove('is-open');drawer.setAttribute('aria-hidden','true');document.body.style.overflow='';};
+  const renderCart=()=>{
+    const cart=getCart();
+    const count=cart.reduce((sum,item)=>sum+item.quantity,0);
+    countEl.textContent=count;
+    cartBtn.classList.toggle('has-items',count>0);
+    emptyEl.classList.toggle('is-hidden',cart.length>0);
+    footerEl.classList.toggle('is-hidden',cart.length===0);
+    itemsEl.innerHTML=cart.map((item,index)=>{
+      const p=PRODUCTS[item.product];
+      return `<div class="cart-item">
+        <img class="cart-item-image" src="${p.image}" alt="">
+        <div><div class="cart-item-name">${p.name}</div><div class="cart-item-price">${formatEUR(p.price)} · x${item.quantity}</div>
+        <select class="cart-size" data-cart-index="${index}" aria-label="Talla de ${p.name}">
+          <option value="">Selecciona talla</option>
+          ${['S','M','L','XL'].map(s=>`<option value="${s}" ${item.size===s?'selected':''}>${s}</option>`).join('')}
+        </select></div>
+        <button class="cart-remove" type="button" data-remove-index="${index}" aria-label="Eliminar">×</button>
+      </div>`;
+    }).join('');
+    const total=cart.reduce((sum,item)=>sum+PRODUCTS[item.product].price*item.quantity,0);
+    totalEl.textContent=formatEUR(total);
+    itemsEl.querySelectorAll('[data-remove-index]').forEach(btn=>btn.addEventListener('click',()=>{const c=getCart();c.splice(Number(btn.dataset.removeIndex),1);saveCart(c);renderCart();}));
+    itemsEl.querySelectorAll('[data-cart-index]').forEach(sel=>sel.addEventListener('change',()=>{const c=getCart();c[Number(sel.dataset.cartIndex)].size=sel.value;saveCart(c);}));
+  };
+  document.querySelectorAll('[data-add-product]').forEach(btn=>btn.addEventListener('click',()=>{
+    const product=btn.dataset.addProduct;
+    const cart=getCart();
+    const existing=cart.find(item=>item.product===product);
+    if(existing) existing.quantity+=1; else cart.push({product,quantity:1,size:''});
+    saveCart(cart);renderCart();openCart();
+  }));
+  cartBtn.addEventListener('click',()=>{renderCart();openCart();});
+  backdrop.addEventListener('click',closeCart);
+  closeBtn.addEventListener('click',closeCart);
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')closeCart();});
+  document.getElementById('cartCheckout').addEventListener('click',async()=>{
+    const cart=getCart();
+    if(!cart.length)return;
+    if(cart.some(item=>!item.size)){window.alert('Selecciona una talla para cada pieza antes de continuar.');return;}
+    const button=document.getElementById('cartCheckout');
+    button.disabled=true;button.textContent='Preparando pago…';
+    try{
+      const response=await fetch('/api/create-checkout-session',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({items:cart})});
+      const data=await response.json().catch(()=>({}));
+      if(!response.ok||!data.url)throw new Error(data.message||'No se pudo iniciar el pago.');
+      window.location.href=data.url;
+    }catch(err){window.alert(err.message);button.disabled=false;button.textContent='Continuar al pago';}
   });
+  renderCart();
 
 });
