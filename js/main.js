@@ -86,21 +86,34 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  /* Recortar solo el primer panel de los collages, sin alterar tamaño/encuadre del producto */
+  /* Normaliza los mockups 02/03: toma únicamente el primer panel del collage
+     y lo convierte en una imagen limpia para el mismo stage 4:5 que el producto 01. */
   document.querySelectorAll('.product-media img[data-collage="true"]').forEach((img) => {
     const cropFirstPanel = () => {
       const source = new Image();
       source.onload = () => {
+        const cellW = source.naturalWidth / 3;
+        const cellH = source.naturalHeight / 3;
+        const insetX = cellW * 0.08;
+        const insetY = cellH * 0.06;
+        const sx = insetX;
+        const sy = insetY;
+        const sw = cellW - insetX * 2;
+        const sh = cellH - insetY * 2;
+        const targetW = 900;
+        const targetH = 1125;
         const canvas = document.createElement('canvas');
-        canvas.width = Math.floor(source.naturalWidth / 3);
-        canvas.height = Math.floor(source.naturalHeight / 3);
+        canvas.width = targetW;
+        canvas.height = targetH;
         const ctx = canvas.getContext('2d');
-        ctx.drawImage(source, 0, 0, canvas.width, canvas.height, 0, 0, canvas.width, canvas.height);
-        img.src = canvas.toDataURL('image/jpeg', 0.94);
+        ctx.imageSmoothingEnabled = true;
+        ctx.imageSmoothingQuality = 'high';
+        ctx.drawImage(source, sx, sy, sw, sh, 0, 0, targetW, targetH);
+        img.src = canvas.toDataURL('image/jpeg', 0.95);
       };
       source.src = img.currentSrc || img.src;
     };
-    if (img.complete) cropFirstPanel();
+    if (img.complete && img.naturalWidth) cropFirstPanel();
     else img.addEventListener('load', cropFirstPanel, { once: true });
   });
 
